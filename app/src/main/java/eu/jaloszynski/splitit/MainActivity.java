@@ -111,9 +111,15 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                String expense = data.getStringExtra(NewWordActivity.EXTRA_REPLY);
-                if (!TextUtils.isEmpty(expense)) {
-                    expenseViewModel.insert(new Expense(expense,"333","3333"));
+
+                Intent intent = getIntent();
+
+                //ExpenseExtra expense = (ExpenseExtra) intent.getSerializableExtra(NewWordActivity.EXTRA_REPLY);
+                ExpenseExtra expense = (ExpenseExtra) data.getSerializableExtra(NewWordActivity.EXTRA_REPLY);
+
+
+                if (expense != null) {
+                    expenseViewModel.insert(new Expense(expense.Name, expense.Expense, expense.Value));
                 }
                 Snackbar.make(findViewById(R.id.fab), R.string.word_saved, Snackbar.LENGTH_SHORT)
                         .show();

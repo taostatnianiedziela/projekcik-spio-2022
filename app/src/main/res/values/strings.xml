@@ -5,11 +5,22 @@
     <string name="hint_word">Word...</string>
     <string name="button_save">Zapisz</string>
     <string name="empty_not_saved">Word not saved because it is empty.</string>
-    <string name="word_saved">Word saved</string>
+    <string name="word_saved">Zapisano</string>
     <string name="name">Name...</string>
     <string name="expense">Wydatek</string>
     <string name="value">Kwota</string>
     <string name="button_back">Wstecz</string>
     <string name="button_clearAll">Wyczyść wybór</string>
     <string name="usersList">Lista wybranych znajomych</string>
+
+
+    <string-array name="friendsList">
+        <item>Marek</item>
+        <item>Adam</item>
+        <item>Marta</item>
+        <item>Natalia</item>
+    </string-array>
+    <string name="friendsPrompt">Wybierz znajomego</string>
+
+
 </resources>
