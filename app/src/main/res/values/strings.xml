@@ -3,10 +3,13 @@
     <string name="action_settings">Settings</string>
 
     <string name="hint_word">Word...</string>
-    <string name="button_save">Save</string>
+    <string name="button_save">Zapisz</string>
     <string name="empty_not_saved">Word not saved because it is empty.</string>
     <string name="word_saved">Word saved</string>
     <string name="name">Name...</string>
-    <string name="expense">Expense</string>
-    <string name="value">Value...</string>
+    <string name="expense">Wydatek</string>
+    <string name="value">Kwota</string>
+    <string name="button_back">Wstecz</string>
+    <string name="button_clearAll">Wyczyść wybór</string>
+    <string name="usersList">Lista wybranych znajomych</string>
 </resources>
