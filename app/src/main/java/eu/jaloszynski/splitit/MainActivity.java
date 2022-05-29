@@ -22,14 +22,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import eu.jaloszynski.R;
 import eu.jaloszynski.splitit.adapter.ExpenseListAdapter;
+import eu.jaloszynski.splitit.adapter.FriendsListAdapter;
 import eu.jaloszynski.splitit.persistence.Expense;
+import eu.jaloszynski.splitit.persistence.Friends;
 import eu.jaloszynski.splitit.viewmodel.ExpenseViewModel;
+import eu.jaloszynski.splitit.viewmodel.FriendsViewModel;
 
 public class MainActivity extends AppCompatActivity {
     private static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
 
     private ExpenseViewModel expenseViewModel;
     private ExpenseListAdapter adapter;
+
+    private FriendsViewModel friendsViewModel;
+    private FriendsListAdapter adapterFriends;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +66,22 @@ public class MainActivity extends AppCompatActivity {
                 adapter.setExpenses(expenses);
             }
         });
+
+// TODO : dokonczyc wyswietlanie ??
+        adapterFriends = new FriendsListAdapter(this);
+        //recyclerView.setAdapter(adapter);
+
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        friendsViewModel = ViewModelProviders.of(this).get(FriendsViewModel.class);
+        friendsViewModel.getAllFriendses().observe(this, new Observer<List<Friends>>() {
+            @Override
+            public void onChanged(@Nullable List<Friends> friendses) {
+                // Update the cached copy of the words in the adapter.
+                adapterFriends.setFriendses(friendses);
+            }
+        });
+
     }
 
     @Override
