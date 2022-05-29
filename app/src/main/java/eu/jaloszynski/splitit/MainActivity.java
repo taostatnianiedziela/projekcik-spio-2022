@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         adapter = new ExpenseListAdapter(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //  recyclerView.setAdapter(adapter);
+        // recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         expenseViewModel = ViewModelProviders.of(this).get(ExpenseViewModel.class);
         expenseViewModel.getAllExpenses().observe(this, new Observer<List<Expense>>() {
@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                 adapterFriends.setFriendses(friendses);
             }
         });
-
     }
 
     @Override
@@ -111,9 +110,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                String expense = data.getStringExtra(NewWordActivity.EXTRA_REPLY);
-                if (!TextUtils.isEmpty(expense)) {
-                    expenseViewModel.insert(new Expense(expense,"333","3333"));
+                Double expense = Double.valueOf(data.getStringExtra(NewWordActivity.EXTRA_REPLY));
+                if (expense != null) {
+                    expenseViewModel.insert(new Expense(1,expense));
                 }
                 Snackbar.make(findViewById(R.id.fab), R.string.word_saved, Snackbar.LENGTH_SHORT)
                         .show();

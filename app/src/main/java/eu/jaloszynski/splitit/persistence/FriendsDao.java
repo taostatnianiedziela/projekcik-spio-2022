@@ -17,6 +17,12 @@ public interface FriendsDao {
     @Query("DELETE from friends_table")
     void deleteAll();
 
+    @Query("SELECT * from friends_table")
+    Friends[] getAllFriends2();
+
     @Query("SELECT * from friends_table ORDER BY name asc")
     LiveData<List<Friends>> getAllFriends();
+
+
+
 }

@@ -52,9 +52,9 @@ public abstract class ExpenseRoomDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
             expenseDao.deleteAll();
-            Expense expense = new Expense("Adam","Pizza","33,33");
+            Expense expense = new Expense(1,46.11);
             expenseDao.insert(expense);
-            expense = new Expense("Adam","Pizza","33,33");
+            expense = new Expense(2,11.63);
             expenseDao.insert(expense);
             return null;
         }

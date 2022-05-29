@@ -1,51 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <EditText
-        android:id="@+id/etName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:hint="@string/name"
-        android:inputType="textAutoComplete"
-        android:padding="@dimen/small_padding"
-        android:layout_marginBottom="@dimen/big_padding"
-        android:layout_marginTop="@dimen/big_padding"
-        android:textSize="18sp" />
-
+    android:layout_height="match_parent"
+    android:background="#36362F">
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="109dp"
+        android:layout_height="103dp"
+        android:translationY="-7dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/component1" />
     <EditText
         android:id="@+id/etExpense"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/big_padding"
-        android:layout_marginBottom="@dimen/big_padding"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="124dp"
+        android:background="@drawable/button_round_corner"
         android:fontFamily="sans-serif-light"
         android:hint="@string/expense"
         android:inputType="textAutoComplete"
+        android:minHeight="48dp"
         android:padding="@dimen/small_padding"
-        android:textSize="18sp" />
-
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <EditText
         android:id="@+id/etValue"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/big_padding"
-        android:layout_marginBottom="@dimen/big_padding"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="192dp"
+        android:background="@drawable/button_round_corner"
         android:fontFamily="sans-serif-light"
         android:hint="@string/value"
         android:inputType="number|numberDecimal"
+        android:minHeight="48dp"
         android:padding="@dimen/small_padding"
-        android:textSize="18sp" />
-
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Spinner
+        android:id="@+id/users_dropdown"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etValue" />
     <Button
         android:id="@+id/button_save"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="152dp"
+        android:background="#d37c2c"
         android:text="@string/button_save"
-        android:textColor="@color/buttonLabel" />
-    
-</LinearLayout>
+        android:textColor="#212121"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/users_dropdown" />
+    <Button
+        android:id="@+id/button_back"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="28dp"
+        android:background="#d37c2c"
+        android:text="@string/button_back"
+        android:textColor="#212121"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_save"
+        app:layout_constraintVertical_bias="0.0" />
+    <Button
+        android:id="@+id/button_clearAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/button_clearAll"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/users_dropdown"
+        tools:ignore="MissingConstraints" />
+    <TextView
+        android:id="@+id/usersList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/usersList"
+        android:layout_marginHorizontal="20dp"
+        android:textColor="#9E9E9E"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_clearAll" />
+</androidx.constraintlayout.widget.ConstraintLayout>

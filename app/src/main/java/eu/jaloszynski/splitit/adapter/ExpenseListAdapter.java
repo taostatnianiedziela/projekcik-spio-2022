@@ -35,9 +35,9 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         TextView tvExpense = expenseViewHolder.expenseViewHolder2;
         TextView tvValue = expenseViewHolder.expenseViewHolder3;
         if (expenses != null) {
-            tvName.setText(expenses.get(i).getName());
-            tvExpense.setText(expenses.get(i).getExpanse());
-            tvValue.setText(expenses.get(i).getValue());
+            tvName.setText(expenses.get(i).getFriends_id());
+            //tvExpense.setText(expenses.get(i).getValue());
+            //tvValue.setText(expenses.get(i).getValue());
             //TODO: More then one expanse
 
 
@@ -67,9 +67,9 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
 
         public ExpenseViewHolder(View itemView) {
             super(itemView);
-            expenseViewHolder = itemView.findViewById(R.id.tvName);
-            expenseViewHolder2 = itemView.findViewById(R.id.tvExpense);
-            expenseViewHolder3 = itemView.findViewById(R.id.tvValue);
+            //expenseViewHolder = itemView.findViewById(R.id.tvName);
+            //expenseViewHolder2 = itemView.findViewById(R.id.tvExpense);
+            //expenseViewHolder3 = itemView.findViewById(R.id.tvValue);
 
         }
     }

@@ -12,49 +12,36 @@ public class Expense {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @NonNull
-    @ColumnInfo(name = "name")
-    private String name;
-    private String expanse;
-    private String value;
+    private int friends_id;
+    private double value;
 
-    public Expense(@NonNull String name, String expanse, String value) {
-        //this.id = id;
-        this.name = name;
-        this.expanse = expanse;
+    public Expense(int friends_id, double value) {
+        this.friends_id = friends_id;
         this.value = value;
     }
 
-    public String getExpanse() {
-        return expanse;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getValue() {
-        return value;
+    public void setFriends_id(int friends_id) {
+        this.friends_id = friends_id;
     }
 
-    public void setName(@NonNull String name) {
-        this.name = name;
-    }
-
-    public void setExpanse(String expanse) {
-        this.expanse = expanse;
-    }
-
-    public void setValue(String value) {
+    public void setValue(float value) {
         this.value = value;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getFriends_id() {
+        return friends_id;
+    }
+
+    public double getValue() {
+        return value;
     }
 
     @Override
@@ -62,11 +49,11 @@ public class Expense {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Expense expanse1 = (Expense) o;
-        return Objects.equals(name, expanse1.name);
+        return Objects.equals(id, expanse1.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(id);
     }
 }

@@ -6,26 +6,26 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/tvFriendName"
         style="@style/WordTitle"
-        android:layout_weight="1"
+        android:layout_width="169dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:background="@android:color/holo_orange_light" />
 
     <TextView
-        android:id="@+id/tvExpense"
+        android:id="@+id/tvFriendValue"
 
         style="@style/WordTitle"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_orange_light" />
 
-    <TextView
-        android:id="@+id/tvValue"
-
-        style="@style/WordTitle"
-
-        android:layout_weight="1"
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_orange_light" />
+        android:layout_weight="1"
+        android:text="Edytuj" />
+
 </LinearLayout>

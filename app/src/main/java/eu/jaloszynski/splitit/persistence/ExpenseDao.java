@@ -17,6 +17,6 @@ public interface ExpenseDao {
     @Query("DELETE from expense_table")
     void deleteAll();
 
-    @Query("SELECT * from expense_table ORDER BY expanse asc")
+    @Query("SELECT * from expense_table ORDER BY id asc")
     LiveData<List<Expense>> getAllWords();
 }
