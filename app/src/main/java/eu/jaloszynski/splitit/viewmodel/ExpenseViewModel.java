@@ -26,6 +26,10 @@ public class ExpenseViewModel extends AndroidViewModel {
         return allExpenses;
     }
 
+    public void delete(Expense expense) {
+        repository.delete(expense);
+    }
+
     public void insert(Expense expense) {
         repository.insert(expense);
     }

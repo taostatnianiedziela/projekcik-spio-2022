@@ -1,4 +1,4 @@
-package eu.jaloszynski.splitit;
+package eu.jaloszynski.splitit.helpers;
 
 import java.io.Serializable;
 

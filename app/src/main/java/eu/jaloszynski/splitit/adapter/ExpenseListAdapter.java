@@ -11,14 +11,18 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import eu.jaloszynski.R;
+import eu.jaloszynski.splitit.helpers.OnItemClickListener;
 import eu.jaloszynski.splitit.persistence.Expense;
 
 public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.ExpenseViewHolder> {
     private LayoutInflater layoutInflater;
     private List<Expense> expenses;
 
-    public ExpenseListAdapter(Context context) {
+    private final OnItemClickListener listener;
+
+    public ExpenseListAdapter(Context context, OnItemClickListener listener) {
         this.layoutInflater = LayoutInflater.from(context);
+        this.listener = listener;
     }
 
     @NonNull
@@ -34,6 +38,9 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         TextView tvName = expenseViewHolder.expenseViewHolder;
         TextView tvExpense = expenseViewHolder.expenseViewHolder2;
         TextView tvValue = expenseViewHolder.expenseViewHolder3;
+
+        expenseViewHolder.bind(expenses.get(i), listener);
+
         if (expenses != null) {
             tvName.setText(expenses.get(i).getName());
             tvExpense.setText(expenses.get(i).getExpanse());
@@ -47,6 +54,8 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
             tvValue.setText("N/A");
         }
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -70,7 +79,16 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
             expenseViewHolder = itemView.findViewById(R.id.tvName);
             expenseViewHolder2 = itemView.findViewById(R.id.tvExpense);
             expenseViewHolder3 = itemView.findViewById(R.id.tvValue);
+        }
 
+        public void bind(final Expense item, final OnItemClickListener listener) {
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(item);
+                }
+            });
         }
     }
 }
+

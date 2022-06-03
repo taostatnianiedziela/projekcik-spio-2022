@@ -18,6 +18,8 @@ import eu.jaloszynski.splitit.persistence.Friends;
 public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.FriendsViewHolder> {
     private LayoutInflater layoutInflater;
     private List<Friends> friendses;
+    private ItemClickListener itemClickListener;
+
 
     public FriendsListAdapter(Context context) {
         this.layoutInflater = LayoutInflater.from(context);
@@ -61,16 +63,28 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
         notifyDataSetChanged();
     }
 
-    public static class FriendsViewHolder extends RecyclerView.ViewHolder {
+
+    public static class FriendsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView friendsViewHolder, friendsViewHolder2;
+
 
 
         public FriendsViewHolder(View itemView) {
             super(itemView);
             friendsViewHolder = itemView.findViewById(R.id.tvName);
             friendsViewHolder2 = itemView.findViewById(R.id.tvExpense);
+        }
 
+
+        @Override
+        public void onClick(View view) {
 
         }
     }
+
+
+    public interface ItemClickListener {
+        void onClick(int position,String value);
+    }
+
 }

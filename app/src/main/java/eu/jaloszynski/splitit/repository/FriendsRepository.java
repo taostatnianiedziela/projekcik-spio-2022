@@ -19,15 +19,18 @@ public class FriendsRepository {
     private FriendsDao friendsDao;
     private LiveData<List<Friends>> allFriendses;
 
+
     public FriendsRepository(Application application) {
         FriendsRoomDatabase db = FriendsRoomDatabase.getInstance(application);
         friendsDao = db.friendsDao();
         allFriendses = friendsDao.getAllFriends();
+
     }
 
     public LiveData<List<Friends>> getAllFriendses() {
         return allFriendses;
     }
+
 
     public void insert(Friends friends) {
         new InsertExpanseAsyncTask(friendsDao).execute(friends);

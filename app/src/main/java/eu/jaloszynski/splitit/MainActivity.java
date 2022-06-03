@@ -1,11 +1,14 @@
 package eu.jaloszynski.splitit;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,6 +26,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import eu.jaloszynski.R;
 import eu.jaloszynski.splitit.adapter.ExpenseListAdapter;
 import eu.jaloszynski.splitit.adapter.FriendsListAdapter;
+import eu.jaloszynski.splitit.helpers.FriendsExtra;
+import eu.jaloszynski.splitit.helpers.ItemClickSupport;
+import eu.jaloszynski.splitit.helpers.OnItemClickListener;
 import eu.jaloszynski.splitit.persistence.Expense;
 import eu.jaloszynski.splitit.persistence.Friends;
 import eu.jaloszynski.splitit.viewmodel.ExpenseViewModel;
@@ -30,12 +36,15 @@ import eu.jaloszynski.splitit.viewmodel.FriendsViewModel;
 
 public class MainActivity extends AppCompatActivity {
     private static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
+    private static final int NEW_FRIEND_ACTIVITY_REQUEST_CODE = 2;
 
     private ExpenseViewModel expenseViewModel;
     private ExpenseListAdapter adapter;
 
     private FriendsViewModel friendsViewModel;
     private FriendsListAdapter adapterFriends;
+    private List<Friends> tmpFriendsListExtra;
+    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +62,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        builder = new AlertDialog.Builder(MainActivity.this);
+
+
+
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        adapter = new ExpenseListAdapter(this);
+        adapter = new ExpenseListAdapter(this, new OnItemClickListener() {
+            @Override
+            public void onItemClick(Expense item) {
+                alertYesNoBuilder(item);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+
+                //Toast.makeText(getApplicationContext(), "Item Clicked" + item.getName(), Toast.LENGTH_LONG).show();
+
+
+            }
+        });
         recyclerView.setAdapter(adapter);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         expenseViewModel = ViewModelProviders.of(this).get(ExpenseViewModel.class);
@@ -64,23 +90,21 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<Expense> expenses) {
                 // Update the cached copy of the words in the adapter.
                 adapter.setExpenses(expenses);
+
             }
         });
 
 // TODO : dokonczyc wyswietlanie ??
         adapterFriends = new FriendsListAdapter(this);
-        //recyclerView.setAdapter(adapter);
-
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         friendsViewModel = ViewModelProviders.of(this).get(FriendsViewModel.class);
         friendsViewModel.getAllFriendses().observe(this, new Observer<List<Friends>>() {
             @Override
-            public void onChanged(@Nullable List<Friends> friendses) {
-                // Update the cached copy of the words in the adapter.
-                adapterFriends.setFriendses(friendses);
+            public void onChanged(@Nullable List<Friends> friends) {
+                adapterFriends.setFriendses(friends);
             }
         });
+
+
 
     }
 
@@ -97,12 +121,15 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
+        if (id == R.id.action_add_friend) {
+            Intent intent = new Intent(MainActivity.this, AddNewFriendActivity.class);
+            startActivityForResult(intent, NEW_FRIEND_ACTIVITY_REQUEST_CODE);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -113,13 +140,17 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 Intent intent = getIntent();
+                List<Friends>  tmpFriendsList = (List<Friends>) data.getSerializableExtra(NewWordActivity.EXTRA_REPLY_FRIENDS_LIST);
+                double expense_1 = (double) data.getSerializableExtra(NewWordActivity.EXTRA_REPLY_EXPENSE);
+                String title = (String) data.getSerializableExtra(NewWordActivity.EXTRA_REPLY_TITLE);
 
-                //ExpenseExtra expense = (ExpenseExtra) intent.getSerializableExtra(NewWordActivity.EXTRA_REPLY);
-                ExpenseExtra expense = (ExpenseExtra) data.getSerializableExtra(NewWordActivity.EXTRA_REPLY);
+                if (tmpFriendsList != null && expense_1 != 0) {
+                    for (Friends temp1 : tmpFriendsList) {
+                        System.out.println(temp1);
+                        expenseViewModel.insert(new Expense(temp1.getName() + temp1.getSurname(),title,String.valueOf(expense_1)));
+                    }
 
-
-                if (expense != null) {
-                    expenseViewModel.insert(new Expense(expense.Name, expense.Expense, expense.Value));
+                   // expenseViewModel.insert(new Expense(expense.getName(), expense.getExpense(), expense.getValue()));
                 }
                 Snackbar.make(findViewById(R.id.fab), R.string.word_saved, Snackbar.LENGTH_SHORT)
                         .show();
@@ -128,5 +159,63 @@ public class MainActivity extends AppCompatActivity {
                         .show();
             }
         }
+
+        if (requestCode == NEW_FRIEND_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+                Intent intent = getIntent();
+                FriendsExtra friend = (FriendsExtra) data.getSerializableExtra(AddNewFriendActivity.EXTRA_REPLY);
+
+                if (tmpFriendsListExtra != null) {
+
+                    friendsViewModel.insert(new Friends(friend.getName(), friend.getSurname()));
+                }
+                Snackbar.make(findViewById(R.id.fab), R.string.friend_saved, Snackbar.LENGTH_SHORT)
+                        .show();
+            } else {
+                Snackbar.make(findViewById(R.id.fab), R.string.empty_not_saved, Snackbar.LENGTH_LONG)
+                        .show();
+            }
+        }
+
     }
+
+    protected void alertYesNoBuilder(final Expense item)
+    {
+
+        builder.setTitle("AlertDialog with No Buttons");
+        builder.setMessage("Czy chcesz usunąć dług " + item.getName() +" na kwotę " + item.getValue() + "za "+ item.getExpanse());
+
+        //Yes Button
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                expenseViewModel.delete(item);
+                Toast.makeText(getApplicationContext(),"Yes button Clicked",Toast.LENGTH_LONG).show();
+                Log.i("Code2care ", "Yes button Clicked!");
+            }
+        });
+
+        //No Button
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"No button Clicked",Toast.LENGTH_LONG).show();
+                Log.i("Code2care ","No button Clicked!");
+                dialog.dismiss();
+
+            }
+        });
+        //Cancel Button
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"Cancel button Clicked",Toast.LENGTH_LONG).show();
+                Log.i("Code2care ","Cancel button Clicked!");
+                dialog.dismiss();
+            }
+        });
+
+    }
+
 }

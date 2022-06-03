@@ -5,10 +5,11 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity(tableName = "friends_table")
-public class Friends {
+public class Friends implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -24,6 +25,11 @@ public class Friends {
         this.surname = surname;
 
     }
+
+//    @Override
+//    public String toString() {
+//        return this.name + " " + this.surname; // What to display in the Spinner list.
+//    }
 
     public void setId(int id) {
         this.id = id;
