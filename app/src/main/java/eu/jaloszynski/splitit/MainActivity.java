@@ -8,16 +8,20 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,7 +31,6 @@ import eu.jaloszynski.R;
 import eu.jaloszynski.splitit.adapter.ExpenseListAdapter;
 import eu.jaloszynski.splitit.adapter.FriendsListAdapter;
 import eu.jaloszynski.splitit.helpers.FriendsExtra;
-import eu.jaloszynski.splitit.helpers.ItemClickSupport;
 import eu.jaloszynski.splitit.helpers.OnItemClickListener;
 import eu.jaloszynski.splitit.persistence.Expense;
 import eu.jaloszynski.splitit.persistence.Friends;
@@ -45,20 +48,34 @@ public class MainActivity extends AppCompatActivity {
     private FriendsListAdapter adapterFriends;
     private List<Friends> tmpFriendsListExtra;
     private AlertDialog.Builder builder;
+    private TextView tv_info;
+    double SumOfValue = 0;
+    private String name = "Adamie"; //TODO zrobić dynamiczną nazwę
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        tv_info=findViewById(R.id.tv_info);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab_add_exoenses = findViewById(R.id.fab);
+        fab_add_exoenses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, NewWordActivity.class);
                 startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
+        FloatingActionButton fab_add_friends = findViewById(R.id.fab_add_friends);
+        fab_add_friends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddNewFriendActivity.class);
+                startActivityForResult(intent, NEW_FRIEND_ACTIVITY_REQUEST_CODE);
+
             }
         });
 
@@ -90,7 +107,8 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<Expense> expenses) {
                 // Update the cached copy of the words in the adapter.
                 adapter.setExpenses(expenses);
-
+                SumOfValue=countSumExpenses();
+                tv_info.setText("Witaj "+name+"!\n"+"Pożyczyłeś łącznie " + SumOfValue);
             }
         });
 
@@ -105,6 +123,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 
@@ -166,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = getIntent();
                 FriendsExtra friend = (FriendsExtra) data.getSerializableExtra(AddNewFriendActivity.EXTRA_REPLY);
 
-                if (tmpFriendsListExtra != null) {
+                if (friend != null) {
 
                     friendsViewModel.insert(new Friends(friend.getName(), friend.getSurname()));
                 }
@@ -178,6 +202,32 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    protected double countSumExpenses()
+    {
+        double tmp = 0;
+        List<Expense> tmplist = expenseViewModel.getAllExpenses().getValue();
+        for (Expense temp1 : tmplist) {
+            try {
+                tmp += parseDecimal(temp1.getValue());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return tmp;
+    }
+
+    public double parseDecimal(String input) throws ParseException {
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+        ParsePosition parsePosition = new ParsePosition(0);
+        Number number = numberFormat.parse(input, parsePosition);
+
+        if(parsePosition.getIndex() != input.length()){
+            throw new ParseException("Invalid input", parsePosition.getIndex());
+        }
+
+        return number.doubleValue();
     }
 
     protected void alertYesNoBuilder(final Expense item)

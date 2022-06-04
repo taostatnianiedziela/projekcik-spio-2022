@@ -42,6 +42,7 @@
     <string name="rTvNameHint">Name</string>
     <string name="rTvExpenseHint">Expense</string>
     <string name="rTvValueHint">Value</string>
+    <string name="welcom_text">Witaj Adamie! \n Pożyczyłes łacznie 142 zł</string>
 
 
 </resources>
