@@ -15,15 +15,27 @@ import eu.jaloszynski.splitit.persistence.ExpenseRoomDatabase;
 public class ExpenseRepository {
     private ExpenseDao expenseDao;
     private LiveData<List<Expense>> allExpenses;
+    private LiveData<List<Expense>> unikeExpensesId;
+    private LiveData<List<Expense>> expensesByFid;
+    private int id;
 
     public ExpenseRepository(Application application) {
         ExpenseRoomDatabase db = ExpenseRoomDatabase.getInstance(application);
         expenseDao = db.expenseDao();
         allExpenses = expenseDao.getAllWords();
+        unikeExpensesId = expenseDao.getAllExpensesGroupEKF();
     }
 
     public LiveData<List<Expense>> getAllWords() {
         return allExpenses;
+    }
+
+    public LiveData<List<Expense>> getExpensesByFid(int id) {
+        return expenseDao.getExpensesByFid(id);
+    }
+
+    public LiveData<List<Expense>> getAllExpensesGroupEKF() {
+        return unikeExpensesId;
     }
 
     public void insert(Expense expense) {
@@ -33,6 +45,8 @@ public class ExpenseRepository {
     public void delete(Expense expense) {
         new DeleteExpanseAsyncTask(expenseDao).execute(expense);
     }
+
+
 
     private static class InsertExpanseAsyncTask extends AsyncTask<Expense, Void, Void> {
         private ExpenseDao taskExpanseDao;

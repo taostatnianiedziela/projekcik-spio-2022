@@ -6,46 +6,51 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
 import eu.jaloszynski.splitit.R;
 import eu.jaloszynski.splitit.helpers.OnItemClickListener;
 import eu.jaloszynski.splitit.persistence.Expense;
 
-public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.ExpenseViewHolder> {
+public class ExpenseListAdapter2 extends RecyclerView.Adapter<ExpenseListAdapter2.ExpenseViewHolder2> {
     private LayoutInflater layoutInflater;
     private List<Expense> expenses;
 
     private final OnItemClickListener listener;
 
-    public ExpenseListAdapter(Context context, OnItemClickListener listener) {
+    public ExpenseListAdapter2(Context context, OnItemClickListener listener) {
         this.layoutInflater = LayoutInflater.from(context);
         this.listener = listener;
     }
 
     @NonNull
     @Override
-    public ExpenseListAdapter.ExpenseViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View recyclerViewItem = layoutInflater.inflate(R.layout.recyclerview_item, viewGroup, false);
+    public ExpenseListAdapter2.ExpenseViewHolder2 onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View recyclerViewItem2 = layoutInflater.inflate(R.layout.recyclerview_item2, viewGroup, false);
 
-        return new ExpenseViewHolder(recyclerViewItem);
+        return new ExpenseViewHolder2(recyclerViewItem2);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ExpenseListAdapter.ExpenseViewHolder expenseViewHolder, int i) {
-        TextView tvName = expenseViewHolder.expenseViewHolder;
+    public void onBindViewHolder(@NonNull ExpenseListAdapter2.ExpenseViewHolder2 expenseViewHolder2, int i) {
+        TextView tvExpense_2 = expenseViewHolder2.expenseViewHolder2_2;
+        TextView tvValue_2 = expenseViewHolder2.expenseViewHolder3_2;
 
-        expenseViewHolder.bind(expenses.get(i), listener);
+        expenseViewHolder2.bind(expenses.get(i), listener);
 
         if (expenses != null) {
-            tvName.setText(expenses.get(i).getName());
+
+            tvExpense_2.setText(expenses.get(i).getExpanse());
+            tvValue_2.setText(expenses.get(i).getValue());
             //TODO: More then one expanse
 
 
         } else {
-            tvName.setText("N/A");
+            tvExpense_2.setText("N/A");
+            tvValue_2.setText("N/A");
         }
     }
 
@@ -62,13 +67,14 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         notifyDataSetChanged();
     }
 
-    public static class ExpenseViewHolder extends RecyclerView.ViewHolder {
-        TextView expenseViewHolder;
+    public static class ExpenseViewHolder2 extends RecyclerView.ViewHolder {
+        TextView expenseViewHolder2_2, expenseViewHolder3_2;
 
 
-        public ExpenseViewHolder(View itemView) {
-            super(itemView);
-            expenseViewHolder = itemView.findViewById(R.id.tvName);
+        public ExpenseViewHolder2(View itemView2) {
+            super(itemView2);
+            expenseViewHolder2_2 = itemView2.findViewById(R.id.tvExpense2);
+            expenseViewHolder3_2 = itemView2.findViewById(R.id.tvValue2);
         }
 
         public void bind(final Expense item, final OnItemClickListener listener) {

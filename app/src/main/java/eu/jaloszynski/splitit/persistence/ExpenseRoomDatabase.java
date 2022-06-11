@@ -51,11 +51,17 @@ public abstract class ExpenseRoomDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            expenseDao.deleteAll();
-            Expense expense = new Expense( "Marek","Pizza","33,33",1);
-            expenseDao.insert(expense);
-            expense = new Expense( "Adam","Pizza","33,33",2);
-            expenseDao.insert(expense);
+//            expenseDao.deleteAll();
+//            Expense expense = new Expense( "Marek Szybki","Pizza","134,15",1);
+//            expenseDao.insert(expense);
+//            expense = new Expense( "Adam Wolny","Piwo","11",2);
+//            expenseDao.insert(expense);
+//
+//            expense = new Expense( "Adam Wolny","Dwa piwa","11",2);
+//            expenseDao.insert(expense);
+//
+//            expense = new Expense( "Marek Szybki","Piwo","11",1);
+//            expenseDao.insert(expense);
             return null;
         }
     }

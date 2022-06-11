@@ -72,7 +72,7 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
         public FriendsViewHolder(View itemView) {
             super(itemView);
             friendsViewHolder = itemView.findViewById(R.id.tvName);
-            friendsViewHolder2 = itemView.findViewById(R.id.tvExpense);
+            //friendsViewHolder2 = itemView.findViewById(R.id.tvExpense);
         }
 
 

@@ -43,6 +43,7 @@ import eu.jaloszynski.splitit.viewmodel.FriendsViewModel;
 public class MainActivity extends AppCompatActivity {
     private static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
     private static final int NEW_FRIEND_ACTIVITY_REQUEST_CODE = 2;
+    public static final String FRIEND_EXPENSE_ACTIVITY_EXTRA_KEY = "ID_EXTERN_KEY_FRIENDS";
     private static String TAG = "MainActivity in SplitIt";
 
 
@@ -92,13 +93,14 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ExpenseListAdapter(this, new OnItemClickListener() {
             @Override
             public void onItemClick(Expense item) {
-                alertYesNoBuilder(item);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
 
+                Intent intent = new Intent(MainActivity.this, FriendExpenseActivity.class);
 
-                //Toast.makeText(getApplicationContext(), "Item Clicked" + item.getName(), Toast.LENGTH_LONG).show();
-
+                Bundle b = new Bundle();
+                b.putInt(FRIEND_EXPENSE_ACTIVITY_EXTRA_KEY, item.getExtern_key_Friends()); //Your id
+                intent.putExtras(b); //Put your id to your next Intent
+                startActivity(intent);
+                // TODO przekazac intent z ID przyjaciela
 
             }
         });
@@ -107,7 +109,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         expenseViewModel = ViewModelProviders.of(this).get(ExpenseViewModel.class);
-        expenseViewModel.getAllExpenses().observe(this, new Observer<List<Expense>>() {
+
+
+
+        expenseViewModel.getAllExpensesGroupEKF().observe(this, new Observer<List<Expense>>() {
             @Override
             public void onChanged(@Nullable List<Expense> expenses) {
                 // Update the cached copy of the words in the adapter.
@@ -245,44 +250,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "sms:" ));
         intent.putExtra( "sms_body", message );
         startActivity(intent);
-    }
-
-    protected void alertYesNoBuilder(final Expense item)
-    {
-
-        builder.setTitle("AlertDialog with No Buttons");
-        builder.setMessage("Czy chcesz usunąć dług " + item.getName() +" na kwotę " + item.getValue() + "za "+ item.getExpanse());
-
-        //Yes Button
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                expenseViewModel.delete(item);
-                Toast.makeText(getApplicationContext(),"Yes button Clicked",Toast.LENGTH_LONG).show();
-                Log.i("Code2care ", "Yes button Clicked!");
-            }
-        });
-
-        //No Button
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(),"No button Clicked",Toast.LENGTH_LONG).show();
-                Log.i("Code2care ","No button Clicked!");
-                dialog.dismiss();
-
-            }
-        });
-        //Cancel Button
-        builder.setNeutralButton("Wyślij SMS z przypomnienieniem", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String message = "Cześć "+ item.getName() + " przypominam o długu w wysokości " + item.getValue() + " za " + item.getExpanse();
-                RequestSmsCode(message);
-                dialog.dismiss();
-            }
-        });
-
     }
 
 }

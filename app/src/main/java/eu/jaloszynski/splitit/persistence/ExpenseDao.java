@@ -23,6 +23,13 @@ public interface ExpenseDao {
     void deleteAll();
 
 
-    @Query("SELECT * from expense_table ORDER BY id asc")
-    LiveData<List<Expense>> getAllWords();
+   @Query("SELECT DISTINCT * from expense_table ORDER BY id asc")
+   LiveData<List<Expense>> getAllWords();
+
+    @Query("SELECT * from expense_table WHERE extern_key_Friends like :idFriend")
+    LiveData<List<Expense>> getExpensesByFid(int idFriend);
+
+    @Query("SELECT * from expense_table GROUP BY extern_key_Friends")
+    LiveData<List<Expense>> getAllExpensesGroupEKF();
+
 }
