@@ -51,11 +51,11 @@ public abstract class FriendsRoomDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-//            friendsDao.deleteAll();
-//            Friends friends = new Friends("Marek","Szybki");
-//            friendsDao.insert(friends);
-//            Friends friends2 = new Friends("Adam","Wolny");
-//            friendsDao.insert(friends2);
+            friendsDao.deleteAll();
+            Friends friends = new Friends("Marek","Szybki");
+            friendsDao.insert(friends);
+            Friends friends2 = new Friends("Adam","Wolny");
+            friendsDao.insert(friends2);
             return null;
         }
     }

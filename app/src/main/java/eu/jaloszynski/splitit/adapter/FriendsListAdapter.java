@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import eu.jaloszynski.R;
+import eu.jaloszynski.splitit.R;
 import eu.jaloszynski.splitit.persistence.Expense;
 import eu.jaloszynski.splitit.persistence.Friends;
 

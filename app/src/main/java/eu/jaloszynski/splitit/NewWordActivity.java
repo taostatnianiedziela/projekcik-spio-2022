@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import eu.jaloszynski.R;
+import eu.jaloszynski.splitit.R;
 import eu.jaloszynski.splitit.adapter.FriendsSpinnerAdapter;
 import eu.jaloszynski.splitit.helpers.ExpenseExtra;
 import eu.jaloszynski.splitit.persistence.Friends;
@@ -130,10 +130,6 @@ public class NewWordActivity extends AppCompatActivity {
             setResult(RESULT_CANCELED, replyIntent);
         } else {
 
-            ExpenseExtra tmp1 = new ExpenseExtra(
-                    spUsers.getSelectedItem().toString(),
-                    etValueView.getText().toString(),
-                    etExpenseView.getText().toString());
             replyIntent.putExtra(EXTRA_REPLY_FRIENDS_LIST, (Serializable) addedFriendsList);
             replyIntent.putExtra(EXTRA_REPLY_TITLE,  etExpenseView.getText().toString());
             replyIntent.putExtra(EXTRA_REPLY_EXPENSE,  sum/friendsCounter);
@@ -201,4 +197,8 @@ public class NewWordActivity extends AppCompatActivity {
         tvSum.setText("Suma wydatków: " + sum + " Na głowę wychodzi: " + sum / friendsCounter);
     }
 
+    private float roulette(){
+
+        return  2.2f;
+    }
 }

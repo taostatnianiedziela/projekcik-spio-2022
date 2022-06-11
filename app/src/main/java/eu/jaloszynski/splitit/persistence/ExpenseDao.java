@@ -23,7 +23,6 @@ public interface ExpenseDao {
     void deleteAll();
 
 
-
-    @Query("SELECT * from expense_table ORDER BY name asc")
+    @Query("SELECT * from expense_table ORDER BY id asc")
     LiveData<List<Expense>> getAllWords();
 }

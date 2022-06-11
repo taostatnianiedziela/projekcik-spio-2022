@@ -10,7 +10,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import eu.jaloszynski.R;
+import eu.jaloszynski.splitit.R;
 import eu.jaloszynski.splitit.helpers.OnItemClickListener;
 import eu.jaloszynski.splitit.persistence.Expense;
 
