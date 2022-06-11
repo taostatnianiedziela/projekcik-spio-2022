@@ -5,11 +5,44 @@
     <string name="hint_word">Word...</string>
     <string name="button_save">Zapisz</string>
     <string name="empty_not_saved">Word not saved because it is empty.</string>
-    <string name="word_saved">Word saved</string>
+    <string name="word_saved">Zapisano</string>
+    <string name="friend_saved">Zapisano</string>
     <string name="name">Name...</string>
     <string name="expense">Wydatek</string>
     <string name="value">Kwota</string>
     <string name="button_back">Wstecz</string>
     <string name="button_clearAll">Wyczyść wybór</string>
-    <string name="usersList">Lista wybranych znajomych</string>
+    <string name="usersList">Lista wybranych znajomych \n</string>
+
+
+    <string-array name="friendsList">
+        <item>Marek</item>
+        <item>Adam</item>
+        <item>Marta</item>
+        <item>Natalia</item>
+    </string-array>
+    <string name="friendsPrompt">Wybierz znajomego</string>
+
+    <!-- Add friend page -->
+    <string name="pageLabel">Dodaj znajomego</string>
+    <string name="nameLabel">Imię</string>
+    <string name="surnameLabel">Nazwisko</string>
+
+
+    <string name="nameInput">Imię</string>
+    <string name="surnameInput">Nazwisko</string>
+    <string name="addFriendButton">Dodaj</string>
+    <string name="btnCancelAddFriend">Anuluj</string>
+    <string name="action_friend">Dodaj znajomego</string>
+    <string name="expensesList">Lista wydatków: \n</string>
+    <string name="button_dodaj">Dodaj</string>
+    <string name="suma">Suma:</string>
+    <string name="title">Tytuł</string>
+    <string name="value2">Kwota: \n</string>
+    <string name="rTvNameHint">Name</string>
+    <string name="rTvExpenseHint">Expense</string>
+    <string name="rTvValueHint">Value</string>
+    <string name="welcom_text">Witaj Adamie! \n Pożyczyłes łacznie 142 zł</string>
+
+
 </resources>

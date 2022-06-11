@@ -30,6 +30,10 @@ public class ExpenseRepository {
         new InsertExpanseAsyncTask(expenseDao).execute(expense);
     }
 
+    public void delete(Expense expense) {
+        new DeleteExpanseAsyncTask(expenseDao).execute(expense);
+    }
+
     private static class InsertExpanseAsyncTask extends AsyncTask<Expense, Void, Void> {
         private ExpenseDao taskExpanseDao;
 
@@ -43,5 +47,21 @@ public class ExpenseRepository {
             return null;
         }
     }
+
+    private static class DeleteExpanseAsyncTask extends AsyncTask<Expense, Void, Void> {
+        private ExpenseDao taskExpanseDao;
+
+        public DeleteExpanseAsyncTask(ExpenseDao expenseDao) {
+            taskExpanseDao = expenseDao;
+        }
+
+        @Override
+        protected Void doInBackground(final Expense... expenses) {
+            taskExpanseDao.delete(expenses[0]);
+            return null;
+        }
+    }
+
+
 
 }

@@ -19,4 +19,9 @@ public interface FriendsDao {
 
     @Query("SELECT * from friends_table ORDER BY name asc")
     LiveData<List<Friends>> getAllFriends();
+
+    @Query("SELECT * from friends_table ORDER BY name asc")
+    List<Friends> getAllFriends2();
+
+
 }
