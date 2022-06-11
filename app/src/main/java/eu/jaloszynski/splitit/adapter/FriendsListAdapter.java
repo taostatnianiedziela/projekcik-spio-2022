@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import eu.jaloszynski.R;
+import eu.jaloszynski.splitit.R;
 import eu.jaloszynski.splitit.persistence.Expense;
 import eu.jaloszynski.splitit.persistence.Friends;
 
@@ -72,7 +72,7 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
         public FriendsViewHolder(View itemView) {
             super(itemView);
             friendsViewHolder = itemView.findViewById(R.id.tvName);
-            friendsViewHolder2 = itemView.findViewById(R.id.tvExpense);
+            //friendsViewHolder2 = itemView.findViewById(R.id.tvExpense);
         }
 
 

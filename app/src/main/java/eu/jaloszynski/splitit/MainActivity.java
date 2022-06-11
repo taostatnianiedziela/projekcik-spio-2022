@@ -1,8 +1,11 @@
 package eu.jaloszynski.splitit;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,12 +25,12 @@ import java.util.Locale;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import eu.jaloszynski.R;
 import eu.jaloszynski.splitit.adapter.ExpenseListAdapter;
 import eu.jaloszynski.splitit.adapter.FriendsListAdapter;
 import eu.jaloszynski.splitit.helpers.FriendsExtra;
@@ -40,6 +43,9 @@ import eu.jaloszynski.splitit.viewmodel.FriendsViewModel;
 public class MainActivity extends AppCompatActivity {
     private static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
     private static final int NEW_FRIEND_ACTIVITY_REQUEST_CODE = 2;
+    public static final String FRIEND_EXPENSE_ACTIVITY_EXTRA_KEY = "ID_EXTERN_KEY_FRIENDS";
+    private static String TAG = "MainActivity in SplitIt";
+
 
     private ExpenseViewModel expenseViewModel;
     private ExpenseListAdapter adapter;
@@ -87,13 +93,14 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ExpenseListAdapter(this, new OnItemClickListener() {
             @Override
             public void onItemClick(Expense item) {
-                alertYesNoBuilder(item);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
 
+                Intent intent = new Intent(MainActivity.this, FriendExpenseActivity.class);
 
-                //Toast.makeText(getApplicationContext(), "Item Clicked" + item.getName(), Toast.LENGTH_LONG).show();
-
+                Bundle b = new Bundle();
+                b.putInt(FRIEND_EXPENSE_ACTIVITY_EXTRA_KEY, item.getExtern_key_Friends()); //Your id
+                intent.putExtras(b); //Put your id to your next Intent
+                startActivity(intent);
+                // TODO przekazac intent z ID przyjaciela
 
             }
         });
@@ -102,13 +109,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         expenseViewModel = ViewModelProviders.of(this).get(ExpenseViewModel.class);
-        expenseViewModel.getAllExpenses().observe(this, new Observer<List<Expense>>() {
+
+
+
+        expenseViewModel.getAllExpensesGroupEKF().observe(this, new Observer<List<Expense>>() {
             @Override
             public void onChanged(@Nullable List<Expense> expenses) {
                 // Update the cached copy of the words in the adapter.
                 adapter.setExpenses(expenses);
-                SumOfValue=countSumExpenses();
-                tv_info.setText("Witaj "+name+"!\n"+"Pożyczyłeś łącznie " + SumOfValue);
+                setSumView();
             }
         });
 
@@ -122,14 +131,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS}, PackageManager.PERMISSION_GRANTED);
 
+    }
 
+    private void setSumView() {
+        SumOfValue=countSumExpenses();
+        tv_info.setText("Witaj "+name+"!\n"+"Pożyczyłeś łącznie " + SumOfValue);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        setSumView();
     }
 
     @Override
@@ -171,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 if (tmpFriendsList != null && expense_1 != 0) {
                     for (Friends temp1 : tmpFriendsList) {
                         System.out.println(temp1);
-                        expenseViewModel.insert(new Expense(temp1.getName() + temp1.getSurname(),title,String.valueOf(expense_1)));
+                        expenseViewModel.insert(new Expense(temp1.getName() + temp1.getSurname(),title,String.valueOf(expense_1),temp1.getId()));
                     }
 
                    // expenseViewModel.insert(new Expense(expense.getName(), expense.getExpense(), expense.getValue()));
@@ -208,11 +222,13 @@ public class MainActivity extends AppCompatActivity {
     {
         double tmp = 0;
         List<Expense> tmplist = expenseViewModel.getAllExpenses().getValue();
-        for (Expense temp1 : tmplist) {
-            try {
-                tmp += parseDecimal(temp1.getValue());
-            } catch (ParseException e) {
-                e.printStackTrace();
+        if(tmplist!=null) {
+            for (Expense temp1 : tmplist) {
+                try {
+                    tmp += parseDecimal(temp1.getValue());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return tmp;
@@ -230,42 +246,10 @@ public class MainActivity extends AppCompatActivity {
         return number.doubleValue();
     }
 
-    protected void alertYesNoBuilder(final Expense item)
-    {
-
-        builder.setTitle("AlertDialog with No Buttons");
-        builder.setMessage("Czy chcesz usunąć dług " + item.getName() +" na kwotę " + item.getValue() + "za "+ item.getExpanse());
-
-        //Yes Button
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                expenseViewModel.delete(item);
-                Toast.makeText(getApplicationContext(),"Yes button Clicked",Toast.LENGTH_LONG).show();
-                Log.i("Code2care ", "Yes button Clicked!");
-            }
-        });
-
-        //No Button
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(),"No button Clicked",Toast.LENGTH_LONG).show();
-                Log.i("Code2care ","No button Clicked!");
-                dialog.dismiss();
-
-            }
-        });
-        //Cancel Button
-        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(),"Cancel button Clicked",Toast.LENGTH_LONG).show();
-                Log.i("Code2care ","Cancel button Clicked!");
-                dialog.dismiss();
-            }
-        });
-
+    public void RequestSmsCode(String message, String... number) {
+        Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "sms:" ));
+        intent.putExtra( "sms_body", message );
+        startActivity(intent);
     }
 
 }

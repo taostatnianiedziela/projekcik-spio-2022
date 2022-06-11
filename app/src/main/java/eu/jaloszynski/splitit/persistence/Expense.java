@@ -12,17 +12,22 @@ public class Expense {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+
     @NonNull
-    @ColumnInfo(name = "name")
     private String name;
     private String expanse;
     private String value;
 
-    public Expense(@NonNull String name, String expanse, String value) {
+
+
+    private int extern_key_Friends;
+
+    public Expense(@NonNull String name, String expanse, String value, int extern_key_Friends) {
         //this.id = id;
         this.name = name;
         this.expanse = expanse;
         this.value = value;
+        this.extern_key_Friends = extern_key_Friends;
     }
 
     public String getExpanse() {
@@ -56,6 +61,16 @@ public class Expense {
     public void setId(int id) {
         this.id = id;
     }
+
+    public int getExtern_key_Friends() {
+        return extern_key_Friends;
+    }
+
+    public void setExtern_key_Friends(int extern_key_Friends) {
+        this.extern_key_Friends = extern_key_Friends;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

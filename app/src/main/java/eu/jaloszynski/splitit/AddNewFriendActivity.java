@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import eu.jaloszynski.R;
+import eu.jaloszynski.splitit.R;
 import eu.jaloszynski.splitit.helpers.FriendsExtra;
 
 public class AddNewFriendActivity extends AppCompatActivity {
