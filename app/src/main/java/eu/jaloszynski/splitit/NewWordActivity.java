@@ -174,7 +174,7 @@ public class NewWordActivity extends AppCompatActivity {
     }
 
     private void clearAll() {
-        tvSum.setText("Suma :");
+        tvSum.setText("Suma");
         tvUsersList.setText("Lista wybranych znajomych");
         tvExpensesList.setText("Lista wydatków:");
     }
@@ -248,7 +248,7 @@ public class NewWordActivity extends AppCompatActivity {
         }else {
             sum = Double.parseDouble(etValueView.getText().toString());
         }
-        tvSum.setText("Suma wydatków: " + sum + " Na głowę wychodzi: " + sum / friendsCounter);
+        tvSum.setText("Suma wydatków: " + sum + " zł \n" + "Każda osoba powinna zapłacić: " + sum / friendsCounter + " zł");
     }
 
     private float roulette(){
