@@ -167,7 +167,7 @@ public class NewWordActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, new ArrayList<Friends>(2));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spUsers.setAdapter(dataAdapter);
-
+        spUsers.setPrompt("Znajomi");
         spUsers.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view,
@@ -175,8 +175,6 @@ public class NewWordActivity extends AppCompatActivity {
 
                        if(spinnerActive == true) {
                             Friends friends = dataAdapter.getItem(position);
-                            Toast.makeText(getApplication(), "ID: " + friends.getId() + "\nName: " + friends.getName() + " " + friends.getSurname(),
-                                    Toast.LENGTH_SHORT).show();
                             tvUsersList.append(friends.getName() + " " + friends.getSurname() + "\n");
                             friendsCounter +=1;
                             addedFriendsList.add(friends);

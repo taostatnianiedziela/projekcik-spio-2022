@@ -57,6 +57,8 @@ public class FriendExpenseActivity extends AppCompatActivity {
 
     private String name = "Adamie"; //TODO zrobić dynamiczną nazwę
 
+    List<Expense> expenses2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,24 +93,18 @@ public class FriendExpenseActivity extends AppCompatActivity {
 
 
                 assert expenses != null;
-                List<Expense> expenses2 =  expenses.stream()
+                expenses2 =  expenses.stream()
                         .filter(p ->p.getExtern_key_Friends() == tmp_id)   // filtering price
                         .map(pm ->pm)          // fetching price
                         .collect(Collectors.toList());
-
 //                Optional<Expense> expenses2 = expenses.stream().
 //                        filter(p -> p.getExtern_key_Friends() == tmp_id).;
-
-
                 adapter_2.setExpenses(expenses2);
                 setSumView();
             }
 
         });
-
-
         ActivityCompat.requestPermissions(FriendExpenseActivity.this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS}, PackageManager.PERMISSION_GRANTED);
-
     }
 
     private void setSumView() {
@@ -122,17 +118,15 @@ public class FriendExpenseActivity extends AppCompatActivity {
         setSumView();
     }
 
-
-
     protected double countSumExpenses()
     {
         double tmp = 0;
-        List<Expense> tmplist = expenseViewModel.getAllExpenses().getValue();
+        List<Expense> tmplist = expenses2;
         if(tmplist!=null) {
             for (Expense temp1 : tmplist) {
                 try {
-                    tmp += parseDecimal(temp1.getValue());
-                } catch (ParseException e) {
+                    tmp += Double.parseDouble(temp1.getValue());
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
