@@ -59,8 +59,6 @@ public class FriendExpenseActivity extends AppCompatActivity {
 
     List<Expense> expenses2;
 
-    List<Expense> expenses2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -134,7 +134,7 @@ public class NewWordActivity extends AppCompatActivity {
             }
         });
 
-
+        //addedFriendsList.add(new Friends("Testowy","Tester"));
 
         this.rvFriendsExpenses = (RecyclerView) findViewById(R.id.rvFriendsExpenses);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -180,30 +180,28 @@ public class NewWordActivity extends AppCompatActivity {
     private void loadSpinnerData() {
 
         FriendsRepository friendsRepository = new FriendsRepository(getApplication());
+
+        ArrayList<Friends> friendsList=new ArrayList<Friends>(2);
+        friendsList.add(0,new Friends("Wybierz","znajomego"));
+
+
         final ArrayAdapter<Friends> dataAdapter = new FriendsSpinnerAdapter(this,
-                android.R.layout.simple_spinner_item, new ArrayList<Friends>(2));
+                android.R.layout.simple_spinner_item, friendsList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spUsers.setAdapter(dataAdapter);
-        spUsers.setPrompt("Znajomi");
         spUsers.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view,
-                    int position, long id) {
-
-                       if(spinnerActive == true) {
-                            Friends friends = dataAdapter.getItem(position);
-                            //tvUsersList.append(friends.getName() + " " + friends.getSurname() + "\n");
-                            friendsCounter +=1;
-                           adapterFriendsExpenses.notifyDataSetChanged();
-                            addedFriendsList.add(friends);
-                            changeSum();
-
-                       }
-                       else if(spinnerActive == false)
-                       {
-                           spinnerActive = true;
-                       }
-                }
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                if(position==0)
+                    return;
+                Friends friends = dataAdapter.getItem(position);
+                friendsCounter +=1;
+                addedFriendsList.add(friends);
+                changeSum();
+                dataAdapter.remove(friends);
+                adapterFriendsExpenses.notifyDataSetChanged();
+            }
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {  }
         });

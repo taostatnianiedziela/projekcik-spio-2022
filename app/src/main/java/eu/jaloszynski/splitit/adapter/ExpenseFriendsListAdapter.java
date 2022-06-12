@@ -36,10 +36,10 @@ public class ExpenseFriendsListAdapter extends RecyclerView.Adapter<ExpenseFrien
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Friends city = friendsList.get(position);
+        Friends friend = friendsList.get(position);
 
 
-        holder.name.setText(city.getName());
+        holder.name.setText(friend.getName() + " " +friend.getSurname());
         holder.partOfExpenses.setText("tutaj podamy ile");
 
 //        holder.description.setText(city.getDescription());
