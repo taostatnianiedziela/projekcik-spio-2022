@@ -161,7 +161,7 @@ public class FriendExpenseActivity extends AppCompatActivity {
     protected void alertYesNoBuilder(final Expense item)
     {
 
-        builder.setTitle("AlertDialog with No Buttons");
+        builder.setTitle("");
         builder.setMessage("Czy chcesz usunąć dług " + item.getName() +" na kwotę " + item.getValue() + "za "+ item.getExpanse());
 
         //Yes Button
