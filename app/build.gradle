@@ -5,7 +5,7 @@ android {
     compileSdk 31
     defaultConfig {
         applicationId "eu.jaloszynski.splitit"
-        minSdkVersion 26
+        minSdkVersion 24
         targetSdk 30
         versionCode 1
         versionName "1.0"

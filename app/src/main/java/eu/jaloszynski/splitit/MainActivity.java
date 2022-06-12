@@ -2,17 +2,14 @@ package eu.jaloszynski.splitit;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -89,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        RecyclerView recyclerView = findViewById(R.id.rvFriendsExpenses);
         adapter = new ExpenseListAdapter(this, new OnItemClickListener() {
             @Override
             public void onItemClick(Expense item) {

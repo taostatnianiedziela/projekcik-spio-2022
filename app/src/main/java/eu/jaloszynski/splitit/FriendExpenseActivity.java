@@ -59,6 +59,8 @@ public class FriendExpenseActivity extends AppCompatActivity {
 
     List<Expense> expenses2;
 
+    List<Expense> expenses2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,6 +159,7 @@ public class FriendExpenseActivity extends AppCompatActivity {
     {
 
         builder.setTitle("");
+
         builder.setMessage("Czy chcesz usunąć dług " + item.getName() +" na kwotę " + item.getValue() + "zł za "+ item.getExpanse() + "?");
 
         //Yes Button
