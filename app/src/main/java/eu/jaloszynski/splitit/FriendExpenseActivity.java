@@ -55,7 +55,9 @@ public class FriendExpenseActivity extends AppCompatActivity {
 
     private int tmp_id = 0;
 
-    private String name = "Adamie"; //TODO zrobić dynamiczną nazwę
+    private String name = "Użytkowniku"; //TODO zrobić dynamiczną nazwę
+
+    List<Expense> expenses2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,29 +93,24 @@ public class FriendExpenseActivity extends AppCompatActivity {
 
 
                 assert expenses != null;
-                List<Expense> expenses2 =  expenses.stream()
+                expenses2 =  expenses.stream()
                         .filter(p ->p.getExtern_key_Friends() == tmp_id)   // filtering price
                         .map(pm ->pm)          // fetching price
                         .collect(Collectors.toList());
-
 //                Optional<Expense> expenses2 = expenses.stream().
 //                        filter(p -> p.getExtern_key_Friends() == tmp_id).;
-
-
                 adapter_2.setExpenses(expenses2);
+                name = expenses2.get(0).getName();
                 setSumView();
             }
 
         });
-
-
         ActivityCompat.requestPermissions(FriendExpenseActivity.this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS}, PackageManager.PERMISSION_GRANTED);
-
     }
 
     private void setSumView() {
         SumOfValue=countSumExpenses();
-        tv_info.setText("Witaj "+name+"!\n"+"Pożyczyłeś łącznie " + SumOfValue);
+        tv_info.setText(name + " wisi Ci łącznie \n" + SumOfValue +" zł");
     }
 
     @Override
@@ -122,17 +119,15 @@ public class FriendExpenseActivity extends AppCompatActivity {
         setSumView();
     }
 
-
-
     protected double countSumExpenses()
     {
         double tmp = 0;
-        List<Expense> tmplist = expenseViewModel.getAllExpenses().getValue();
+        List<Expense> tmplist = expenses2;
         if(tmplist!=null) {
             for (Expense temp1 : tmplist) {
                 try {
-                    tmp += parseDecimal(temp1.getValue());
-                } catch (ParseException e) {
+                    tmp += Double.parseDouble(temp1.getValue());
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -161,25 +156,25 @@ public class FriendExpenseActivity extends AppCompatActivity {
     protected void alertYesNoBuilder(final Expense item)
     {
 
-        builder.setTitle("AlertDialog with No Buttons");
-        builder.setMessage("Czy chcesz usunąć dług " + item.getName() +" na kwotę " + item.getValue() + "za "+ item.getExpanse());
+        builder.setTitle("");
+        builder.setMessage("Czy chcesz usunąć dług " + item.getName() +" na kwotę " + item.getValue() + "zł za "+ item.getExpanse() + "?");
 
         //Yes Button
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Tak. Niech zna moją litość", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 expenseViewModel.delete(item);
-                Toast.makeText(getApplicationContext(),"Yes button Clicked",Toast.LENGTH_LONG).show();
-                Log.i("Code2care ", "Yes button Clicked!");
+                Toast.makeText(getApplicationContext(),"Dług usunięty!",Toast.LENGTH_LONG).show();
+                Log.i("Code2care ", "Dług usunięty!");
             }
         });
 
         //No Button
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Nie. Nie zasłużył na moją łaskę", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(),"No button Clicked",Toast.LENGTH_LONG).show();
-                Log.i("Code2care ","No button Clicked!");
+                Toast.makeText(getApplicationContext(),"Dług pozostał",Toast.LENGTH_LONG).show();
+                Log.i("Code2care ","Dług pozostał!");
                 dialog.dismiss();
 
             }
@@ -188,7 +183,7 @@ public class FriendExpenseActivity extends AppCompatActivity {
         builder.setNeutralButton("Wyślij SMS z przypomnienieniem", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String message = "Cześć "+ item.getName() + " przypominam o długu w wysokości " + item.getValue() + " za " + item.getExpanse();
+                String message = "Cześć "+ item.getName() + " przypominam o długu w wysokości " + item.getValue() + "zł za " + item.getExpanse();
                 RequestSmsCode(message);
                 dialog.dismiss();
             }
