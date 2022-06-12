@@ -1,10 +1,12 @@
 package eu.jaloszynski.splitit;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,8 +32,12 @@ import java.util.List;
 import eu.jaloszynski.splitit.R;
 import eu.jaloszynski.splitit.adapter.ExpenseFriendsListAdapter;
 import eu.jaloszynski.splitit.adapter.ExpenseListAdapter;
+import eu.jaloszynski.splitit.adapter.ExpenseListAdapter2;
 import eu.jaloszynski.splitit.adapter.FriendsSpinnerAdapter;
 import eu.jaloszynski.splitit.helpers.ExpenseExtra;
+import eu.jaloszynski.splitit.helpers.OnItemClickListener;
+import eu.jaloszynski.splitit.helpers.OnItemClickListenerFriends;
+import eu.jaloszynski.splitit.persistence.Expense;
 import eu.jaloszynski.splitit.persistence.Friends;
 import eu.jaloszynski.splitit.repository.FriendsRepository;
 
@@ -140,7 +146,19 @@ public class NewWordActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         this.rvFriendsExpenses.setLayoutManager(mLayoutManager);
 
-        adapterFriendsExpenses = new ExpenseFriendsListAdapter(addedFriendsList);
+       // adapterFriendsExpenses = new ExpenseFriendsListAdapter(addedFriendsList);
+
+        adapterFriendsExpenses = new ExpenseFriendsListAdapter(this, new OnItemClickListenerFriends() {
+
+            @Override
+            public void onItemClick(Friends item) {
+
+                Log.d("ddd", "test 1234");
+
+            }
+
+        },addedFriendsList);
+
         this.rvFriendsExpenses.setAdapter(adapterFriendsExpenses);
 
     }
