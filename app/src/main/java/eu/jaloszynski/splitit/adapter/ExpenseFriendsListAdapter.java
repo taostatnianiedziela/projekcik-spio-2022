@@ -79,11 +79,20 @@ public class ExpenseFriendsListAdapter extends RecyclerView.Adapter<ExpenseFrien
             name = view.findViewById(R.id.tvNameElement);
             partOfExpenses = view.findViewById(R.id.etPartOfExpenses);
             imageDelete = view.findViewById(R.id.btDeleteElement);
+
+
+
+
         }
 
         public void bind(final Friends item, final OnItemClickListenerFriends listener) {
 
             itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                }
+            });
+
+            imageDelete.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     int position = getAdapterPosition();
                     switch(v.getId()) {
@@ -93,8 +102,6 @@ public class ExpenseFriendsListAdapter extends RecyclerView.Adapter<ExpenseFrien
                         default:
                             // code block
                     }
-
-
                 }
             });
         }

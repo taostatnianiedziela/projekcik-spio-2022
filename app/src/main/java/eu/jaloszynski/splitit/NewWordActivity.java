@@ -140,8 +140,6 @@ public class NewWordActivity extends AppCompatActivity {
             }
         });
 
-        //addedFriendsList.add(new Friends("Testowy","Tester"));
-
         this.rvFriendsExpenses = (RecyclerView) findViewById(R.id.rvFriendsExpenses);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         this.rvFriendsExpenses.setLayoutManager(mLayoutManager);
@@ -153,7 +151,11 @@ public class NewWordActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Friends item) {
 
-                Log.d("ddd", "test 1234");
+                addedFriendsList.remove(item);
+
+                changeSum();
+                adapterFriendsExpenses.notifyDataSetChanged();
+                loadSpinnerData();
 
             }
 
@@ -185,7 +187,6 @@ public class NewWordActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(etExpenseView.getText()) || TextUtils.isEmpty(etValueView.getText()) || friendsCounter < 1 ) {
             setResult(RESULT_CANCELED, replyIntent);
         } else {
-
             replyIntent.putExtra(EXTRA_REPLY_FRIENDS_LIST, (Serializable) addedFriendsList);
             replyIntent.putExtra(EXTRA_REPLY_TITLE,  etExpenseView.getText().toString());
             replyIntent.putExtra(EXTRA_REPLY_EXPENSE,  sum/friendsCounter);
@@ -219,6 +220,7 @@ public class NewWordActivity extends AppCompatActivity {
                 changeSum();
                 dataAdapter.remove(friends);
                 adapterFriendsExpenses.notifyDataSetChanged();
+                spUsers.setSelection(0);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {  }
