@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog.Builder builder;
     private TextView tv_info;
     double SumOfValue = 0;
-    private String name = "Adamie"; //TODO zrobić dynamiczną nazwę
+    private String name = "Użytkowniku"; //TODO zrobić dynamiczną nazwę
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +137,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setSumView() {
         SumOfValue=countSumExpenses();
-        tv_info.setText("Witaj "+name+"!\n"+"Pożyczyłeś łącznie " + SumOfValue);
+        // tv_info.setText("Witaj "+name+"!\n"+"Twoi znajomi są Ci dłużni \n" + SumOfValue + " zł");
+        tv_info.setText("Witaj "+name+"!\n"+"Sprawdź ile są Ci dłużni Twoi znajomi!");
     }
 
     @Override
