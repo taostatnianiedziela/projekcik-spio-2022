@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class NewWordActivity extends AppCompatActivity {
     private Button btSave;
     private Button btAdd;
     private List<Friends> addedFriendsList = new ArrayList<>();
+    private Switch swAddMe;
 
 
     public NewWordActivity() {
@@ -66,8 +68,10 @@ public class NewWordActivity extends AppCompatActivity {
         btSave = findViewById(R.id.button_save);
         btAdd = findViewById(R.id.button_add);
         tvExpensesList = findViewById(R.id.expensesList);
+        swAddMe = findViewById(R.id.sw_addMe);
 
         loadSpinnerData();
+
         btSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +90,21 @@ public class NewWordActivity extends AppCompatActivity {
                 setAddButton();
             }
         });
+
+        swAddMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(swAddMe.isChecked())
+                {
+                    friendsCounter += 1;
+                }
+                else
+                {
+                    friendsCounter -= 1;
+                }
+            }
+        });
+
         etValueView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -108,6 +127,8 @@ public class NewWordActivity extends AppCompatActivity {
         });
 
     }
+
+
 
     private void setAddButton() {
         if ( TextUtils.isEmpty(etValueView.getText()) && TextUtils.isEmpty(etExpenseView.getText() )) {
