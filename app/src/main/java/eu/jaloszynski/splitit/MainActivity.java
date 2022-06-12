@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private ExpenseViewModel expenseViewModel;
+    private ExpenseViewModel tmpExpenseViewModel;
     private ExpenseListAdapter adapter;
 
     private FriendsViewModel friendsViewModel;
@@ -83,9 +85,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         builder = new AlertDialog.Builder(MainActivity.this);
-
-
-
         RecyclerView recyclerView = findViewById(R.id.rvFriendsExpenses);
         adapter = new ExpenseListAdapter(this, new OnItemClickListener() {
             @Override
@@ -97,36 +96,56 @@ public class MainActivity extends AppCompatActivity {
                 b.putInt(FRIEND_EXPENSE_ACTIVITY_EXTRA_KEY, item.getExtern_key_Friends()); //Your id
                 intent.putExtras(b); //Put your id to your next Intent
                 startActivity(intent);
-                // TODO przekazac intent z ID przyjaciela
+                // DONE przekazac intent z ID przyjaciela
 
             }
         });
         recyclerView.setAdapter(adapter);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         expenseViewModel = ViewModelProviders.of(this).get(ExpenseViewModel.class);
-
+        tmpExpenseViewModel = ViewModelProviders.of(this).get(ExpenseViewModel.class);
 
 
         expenseViewModel.getAllExpensesGroupEKF().observe(this, new Observer<List<Expense>>() {
             @Override
             public void onChanged(@Nullable List<Expense> expenses) {
-                // Update the cached copy of the words in the adapter.
+
                 adapter.setExpenses(expenses);
                 setSumView();
+
+//                List<Expense> tmpExpense = expenseViewModel.getAllExpensesGroupEKF().getValue();
+//                List<Expense> tmpExpense2 = new ArrayList();
+//                for (Expense temp : tmpExpense) {
+//
+//
+//                    for(Expense temp2 : tmpExpense2)
+//                    {
+//                        if(temp2.getName()==temp.getName())
+//                        {
+//                            double t1 = Double.parseDouble(Double.parseDouble(temp2.getValue()) + temp.getValue());
+//                            temp2.setValue(String.valueOf(t1));
+//                        }
+//                        else
+//                        {
+//                            tmpExpense2.add(temp);
+//                        }
+//
+//                    }
+//                }
+
+
             }
         });
 
-// TODO : dokonczyc wyswietlanie ??
-        adapterFriends = new FriendsListAdapter(this);
-        friendsViewModel = ViewModelProviders.of(this).get(FriendsViewModel.class);
-        friendsViewModel.getAllFriendses().observe(this, new Observer<List<Friends>>() {
-            @Override
-            public void onChanged(@Nullable List<Friends> friends) {
-                adapterFriends.setFriendses(friends);
-            }
-        });
+//// TODO : dokonczyc wyswietlanie ??
+//        adapterFriends = new FriendsListAdapter(this);
+//        friendsViewModel = ViewModelProviders.of(this).get(FriendsViewModel.class);
+//        friendsViewModel.getAllFriendses().observe(this, new Observer<List<Friends>>() {
+//            @Override
+//            public void onChanged(@Nullable List<Friends> friends) {
+//                adapterFriends.setFriendses(friends);
+//            }
+//        });
 
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS}, PackageManager.PERMISSION_GRANTED);
 

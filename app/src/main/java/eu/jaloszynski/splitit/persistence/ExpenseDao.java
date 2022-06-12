@@ -23,7 +23,7 @@ public interface ExpenseDao {
     void deleteAll();
 
 
-   @Query("SELECT DISTINCT * from expense_table ORDER BY id asc")
+   @Query("SELECT * from expense_table ORDER BY id asc")
    LiveData<List<Expense>> getAllWords();
 
     @Query("SELECT * from expense_table WHERE extern_key_Friends like :idFriend")

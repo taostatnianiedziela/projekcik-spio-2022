@@ -1,107 +1,79 @@
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+public class TrainBwStnAdapater extends RecyclerView.Adapter<TrainBwStnAdapater.TrainStnViewHolder> {
 
-import com.squareup.picasso.Picasso;
+    //region variables
+    private Context mContext;
+    private List<TrainDetail> mTrainDetails;
+    public DetailsAdapterListener onClickListener;
+    //endregion
 
-import java.util.ArrayList;
+    //region viewholder class
+    public class TrainStnViewHolder extends RecyclerView.ViewHolder  {
+    //using ButterKnife for Binding
+    //other fields removed for simplicity
+        @BindView(R.id.bw_trnNo)
+        TextView mTrainNo;
+        @BindView(R.id.class_btn)
+        AppCompatButton mClassBtn;
+        @BindView(R.id.days_btn)
+        AppCompatButton mDaysBtn;
 
-public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
+        public TrainStnViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
 
- private ArrayList<City> cities;
+            mClassBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickListener.classOnClick(v, getAdapterPosition());
+                }
+            });
+            mDaysBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickListener.daysOnClick(v, getAdapterPosition());
+                }
+            });
+        }
+    }
+    //endregion
 
- public CityAdapter(ArrayList<City> cities) {
- this.cities = cities;
- }
+    //region constructor
+    public TrainBwStnAdapater(Context context, List<TrainDetail> mTrainDetails,
+                              DetailsAdapterListener listener) {
+        this.mContext = context;
+        this.mTrainDetails = mTrainDetails;
+        this.onClickListener = listener;
+    }
+    //endregion
 
- @NonNull
- @Override
- public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
- View v = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_city, parent, false);
+    //region overrides
+    @Override
+    public TrainBwStnAdapater.TrainStnViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.train_bw_stn_card, parent, false);
 
- return new ViewHolder(v);
- }
+        return new TrainStnViewHolder(itemView);
+    }
 
- @Override
- public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
- City city = cities.get(position);
+    @Override
+    public void onBindViewHolder(TrainBwStnAdapater.TrainStnViewHolder holder, final int position) {
+        TrainDetail trainDetail = mTrainDetails.get(position);
+        holder.mTrainNo.setText(String.valueOf(trainDetail.getNumber()));
+        //other fields removed for simplicity
+    }
 
- holder.name.setText(city.getName());
- holder.description.setText(city.getDescription());
+    @Override
+    public int getItemCount() {
+        return mTrainDetails.size();
+    }
+    //endregion
 
- Picasso.get().load(city.getImageURL()).into(holder.image);
- }
+    //region Interface Details listener
+    public interface DetailsAdapterListener {
 
- @Override
- public int getItemCount() {
- if (cities != null) {
- return cities.size();
- } else {
- return 0;
- }
- }
+        void classOnClick(View v, int position);
 
- public static class ViewHolder extends RecyclerView.ViewHolder {
- public final View view;
- public final TextView name;
- public final TextView description;
- public final ImageView image;
-
- public ViewHolder(View view) {
- super(view);
- this.view = view;
- name = view.findViewById(R.id.name);
- description = view.findViewById(R.id.description);
- image = view.findViewById(R.id.image);
- }
- }
-}
-
-
-
-
-
-
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-
-import java.util.ArrayList;
-
-public class MainActivity extends AppCompatActivity {
-
- private RecyclerView cities;
- private RecyclerView.Adapter adapter;
-
-
- @Override
- protected void onCreate(Bundle savedInstanceState) {
- super.onCreate(savedInstanceState);
- setContentView(R.layout.activity_main);
-
- ArrayList<City> cities = initCities();
-
- this.cities = (RecyclerView) findViewById(R.id.cities);
- RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
- this.cities.setLayoutManager(mLayoutManager);
-
- adapter = new CityAdapter(cities);
- this.cities.setAdapter(adapter);
- }
-
- private ArrayList<City> initCities() {
- ArrayList<City> list = new ArrayList<>();
-
- list.add(new City("Cinque Terre", "The coastline, the five villages in Italy.", "https://bit.ly/CBImageCinque"));
- list.add(new City("Paris", "Paris is the capital city of France", "https://bit.ly/CBImageParis"));
- list.add(new City("Rio de Janeiro", "Rio has been one of Brazil's most popular destinations.", "https://bit.ly/CBImageRio"));
- list.add(new City("Sydney", "Sydney is the state capital of New South Wales.", "https://bit.ly/CBImageSydney"));
-
- return list;
- }
+        void daysOnClick(View v, int position);
+    }
+    //endregion
 }
