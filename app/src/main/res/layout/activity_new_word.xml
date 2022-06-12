@@ -118,13 +118,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFriendsExpenses"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="381dp"
+        android:layout_height="228dp"
         android:background="#36362F"
         app:layout_constraintBottom_toTopOf="@+id/button_add"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_clearAll"
+        app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/recyclerview_item3" />
 
     <TextView
@@ -179,5 +181,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/users_dropdown"
         tools:ignore="TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="Lista znajomych:"
+        android:textColor="#9E9E9E"
+        android:textColorHint="#9E9E9E"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_Btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
