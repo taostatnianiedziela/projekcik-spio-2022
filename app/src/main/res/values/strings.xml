@@ -4,7 +4,7 @@
 
     <string name="hint_word">Word...</string>
     <string name="button_save">Zapisz</string>
-    <string name="empty_not_saved">Word not saved because it is empty.</string>
+    <string name="empty_not_saved">Zmiany nie zostały zapisane</string>
     <string name="word_saved">Zapisano</string>
     <string name="friend_saved">Zapisano</string>
     <string name="name">Name...</string>
