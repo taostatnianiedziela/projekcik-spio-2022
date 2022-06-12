@@ -18,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import eu.jaloszynski.splitit.R;
+import eu.jaloszynski.splitit.adapter.ExpenseFriendsListAdapter;
+import eu.jaloszynski.splitit.adapter.ExpenseListAdapter;
 import eu.jaloszynski.splitit.adapter.FriendsSpinnerAdapter;
 import eu.jaloszynski.splitit.helpers.ExpenseExtra;
 import eu.jaloszynski.splitit.persistence.Friends;
@@ -50,6 +54,10 @@ public class NewWordActivity extends AppCompatActivity {
     private Button btAdd;
     private List<Friends> addedFriendsList = new ArrayList<>();
     private Switch swAddMe;
+    ArrayList<Friends> friends_tmp1;
+
+    private RecyclerView rvFriendsExpenses;
+    private RecyclerView.Adapter adapterFriendsExpenses;
 
 
     public NewWordActivity() {
@@ -62,12 +70,11 @@ public class NewWordActivity extends AppCompatActivity {
         etExpenseView = findViewById(R.id.etExpense);
         etValueView = findViewById(R.id.etValue);
         spUsers = findViewById(R.id.users_dropdown);
-        tvUsersList = findViewById(R.id.usersList);
+        //tvUsersList = findViewById(R.id.usersList);
         tvSum = findViewById(R.id.tvSum);
         btClearAll = findViewById(R.id.button_clearAll);
         btSave = findViewById(R.id.button_save);
         btAdd = findViewById(R.id.button_add);
-        tvExpensesList = findViewById(R.id.expensesList);
         swAddMe = findViewById(R.id.sw_addMe);
 
         loadSpinnerData();
@@ -102,6 +109,7 @@ public class NewWordActivity extends AppCompatActivity {
                 {
                     friendsCounter -= 1;
                 }
+                changeSum();
             }
         });
 
@@ -126,6 +134,15 @@ public class NewWordActivity extends AppCompatActivity {
             }
         });
 
+
+
+        this.rvFriendsExpenses = (RecyclerView) findViewById(R.id.rvFriendsExpenses);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        this.rvFriendsExpenses.setLayoutManager(mLayoutManager);
+
+        adapterFriendsExpenses = new ExpenseFriendsListAdapter(addedFriendsList);
+        this.rvFriendsExpenses.setAdapter(adapterFriendsExpenses);
+
     }
 
 
@@ -147,7 +164,7 @@ public class NewWordActivity extends AppCompatActivity {
     private void setSaveButton() {
         Intent replyIntent = new Intent();
 
-        if (TextUtils.isEmpty(etExpenseView.getText()) || TextUtils.isEmpty(etValueView.getText()) || friendsCounter <= 1) {
+        if (TextUtils.isEmpty(etExpenseView.getText()) || TextUtils.isEmpty(etValueView.getText()) || friendsCounter < 1 ) {
             setResult(RESULT_CANCELED, replyIntent);
         } else {
 
@@ -175,10 +192,12 @@ public class NewWordActivity extends AppCompatActivity {
 
                        if(spinnerActive == true) {
                             Friends friends = dataAdapter.getItem(position);
-                            tvUsersList.append(friends.getName() + " " + friends.getSurname() + "\n");
+                            //tvUsersList.append(friends.getName() + " " + friends.getSurname() + "\n");
                             friendsCounter +=1;
+                           adapterFriendsExpenses.notifyDataSetChanged();
                             addedFriendsList.add(friends);
-                           changeSum();
+                            changeSum();
+
                        }
                        else if(spinnerActive == false)
                        {

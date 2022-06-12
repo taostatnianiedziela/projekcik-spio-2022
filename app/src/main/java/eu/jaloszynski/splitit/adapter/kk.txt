@@ -1,0 +1,107 @@
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
+
+ private ArrayList<City> cities;
+
+ public CityAdapter(ArrayList<City> cities) {
+ this.cities = cities;
+ }
+
+ @NonNull
+ @Override
+ public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+ View v = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_city, parent, false);
+
+ return new ViewHolder(v);
+ }
+
+ @Override
+ public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+ City city = cities.get(position);
+
+ holder.name.setText(city.getName());
+ holder.description.setText(city.getDescription());
+
+ Picasso.get().load(city.getImageURL()).into(holder.image);
+ }
+
+ @Override
+ public int getItemCount() {
+ if (cities != null) {
+ return cities.size();
+ } else {
+ return 0;
+ }
+ }
+
+ public static class ViewHolder extends RecyclerView.ViewHolder {
+ public final View view;
+ public final TextView name;
+ public final TextView description;
+ public final ImageView image;
+
+ public ViewHolder(View view) {
+ super(view);
+ this.view = view;
+ name = view.findViewById(R.id.name);
+ description = view.findViewById(R.id.description);
+ image = view.findViewById(R.id.image);
+ }
+ }
+}
+
+
+
+
+
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+ private RecyclerView cities;
+ private RecyclerView.Adapter adapter;
+
+
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_main);
+
+ ArrayList<City> cities = initCities();
+
+ this.cities = (RecyclerView) findViewById(R.id.cities);
+ RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+ this.cities.setLayoutManager(mLayoutManager);
+
+ adapter = new CityAdapter(cities);
+ this.cities.setAdapter(adapter);
+ }
+
+ private ArrayList<City> initCities() {
+ ArrayList<City> list = new ArrayList<>();
+
+ list.add(new City("Cinque Terre", "The coastline, the five villages in Italy.", "https://bit.ly/CBImageCinque"));
+ list.add(new City("Paris", "Paris is the capital city of France", "https://bit.ly/CBImageParis"));
+ list.add(new City("Rio de Janeiro", "Rio has been one of Brazil's most popular destinations.", "https://bit.ly/CBImageRio"));
+ list.add(new City("Sydney", "Sydney is the state capital of New South Wales.", "https://bit.ly/CBImageSydney"));
+
+ return list;
+ }
+}

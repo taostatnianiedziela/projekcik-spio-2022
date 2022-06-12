@@ -16,7 +16,7 @@ public class ItemClickSupport {
         @Override
         public void onClick(View v) {
             if (mOnItemClickListener != null) {
-                mRecyclerView.findViewById(R.id.recyclerview);
+                mRecyclerView.findViewById(R.id.rvFriendsExpenses);
                 // ask the RecyclerView for the viewHolder of this view.
                 // then use it to get the position for the adapter
                 FriendsListAdapter.FriendsViewHolder holder = (FriendsListAdapter.FriendsViewHolder) mRecyclerView.getChildViewHolder(v);

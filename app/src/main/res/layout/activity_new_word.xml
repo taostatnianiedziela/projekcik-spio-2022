@@ -21,7 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="104dp"
         android:background="@drawable/button_round_corner"
         android:fontFamily="sans-serif-light"
         android:hint="@string/title"
@@ -32,6 +32,7 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,7 +41,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="192dp"
+        android:layout_marginTop="164dp"
         android:background="@drawable/button_round_corner"
         android:fontFamily="sans-serif-light"
         android:hint="@string/value"
@@ -59,12 +60,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dialog"
+        android:spinnerMode="dropdown"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etValue"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -115,45 +116,34 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
-    <TextView
-        android:id="@+id/usersList"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFriendsExpenses"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:text="@string/usersList"
-        android:textColor="#9E9E9E"
+        android:layout_height="0dp"
+        android:background="#36362F"
+        app:layout_constraintBottom_toTopOf="@+id/button_add"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_Btn" />
-
-    <TextView
-        android:id="@+id/expensesList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/value2"
-        android:textColor="#9E9E9E"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usersList" />
+        app:layout_constraintTop_toBottomOf="@+id/button_clearAll"
+        tools:listitem="@layout/recyclerview_item3" />
 
     <TextView
         android:id="@+id/tvSum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/suma"
         android:textColor="#9E9E9E"
-        app:layout_constraintBottom_toTopOf="@+id/button_add"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/button_save"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_Btn"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_marginTop="10sp"
+        android:layout_width="370dp"
+        android:layout_height="41dp"
         app:layout_constraintEnd_toEndOf="@+id/users_dropdown"
         app:layout_constraintStart_toStartOf="@+id/users_dropdown"
         app:layout_constraintTop_toBottomOf="@+id/users_dropdown">
@@ -162,29 +152,32 @@
             android:id="@+id/sw_addMe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:checked="true"
             android:minHeight="48dp"
             android:shadowColor="#D27C2C"
             android:text="Licz ze mną"
             android:textColor="#9E9E9E"
             android:textSize="20sp"
-            android:checked="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/button_clearAll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_round_corner_orange"
-            android:padding="10dp"
-            android:text="@string/button_clearAll"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            tools:ignore="TouchTargetSizeCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/button_clearAll"
+        android:layout_width="72dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_round_corner"
+        android:padding="5dp"
+        android:text="@string/button_clearAll"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/users_dropdown"
+        tools:ignore="TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
