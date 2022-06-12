@@ -248,7 +248,7 @@ public class NewWordActivity extends AppCompatActivity {
         }else {
             sum = Double.parseDouble(etValueView.getText().toString());
         }
-        tvSum.setText("Suma wydatków: " + sum + " zł \n" + "Każda osoba powinna zapłacić: " + Math.round((sum / friendsCounter)*100)/100.0 + " zł");
+        tvSum.setText("Suma wydatków: " + Math.round(sum*100.0)/100.0 + " zł \n" + "Każda osoba powinna zapłacić: " + Math.round((sum / friendsCounter)*100)/100.0 + " zł");
     }
 
     private float roulette(){
