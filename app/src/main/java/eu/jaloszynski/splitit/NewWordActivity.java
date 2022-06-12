@@ -188,7 +188,7 @@ public class NewWordActivity extends AppCompatActivity {
 
             replyIntent.putExtra(EXTRA_REPLY_FRIENDS_LIST, (Serializable) addedFriendsList);
             replyIntent.putExtra(EXTRA_REPLY_TITLE,  etExpenseView.getText().toString());
-            replyIntent.putExtra(EXTRA_REPLY_EXPENSE,  sum/friendsCounter);
+            replyIntent.putExtra(EXTRA_REPLY_EXPENSE,  Math.round((sum/friendsCounter)*100)/100.0);
             setResult(RESULT_OK, replyIntent);
             finish();
         }
@@ -248,7 +248,7 @@ public class NewWordActivity extends AppCompatActivity {
         }else {
             sum = Double.parseDouble(etValueView.getText().toString());
         }
-        tvSum.setText("Suma wydatków: " + sum + " zł \n" + "Każda osoba powinna zapłacić: " + sum / friendsCounter + " zł");
+        tvSum.setText("Suma wydatków: " + sum + " zł \n" + "Każda osoba powinna zapłacić: " + Math.round((sum / friendsCounter)*100)/100.0 + " zł");
     }
 
     private float roulette(){
