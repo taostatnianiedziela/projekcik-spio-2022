@@ -1,6 +1,8 @@
 package eu.jaloszynski.splitit;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,10 +26,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,12 +68,17 @@ public class NewExpensesActivity extends AppCompatActivity {
     private Switch swAddMe;
     private Switch swProportional;
     ArrayList<Friends> friends_tmp1;
+    private AlertDialog.Builder builder;
 
-
+    Context context;
+    int duration = Toast.LENGTH_SHORT;
 
     private RecyclerView rvFriendsExpenses;
     private RecyclerView.Adapter adapterFriendsExpenses;
 
+    ArrayAdapter<Friends> dataAdapter;
+    ArrayList<Friends> friendsList;
+    FriendsRepository friendsRepository;
 
     public NewExpensesActivity() {
     }
@@ -90,9 +97,9 @@ public class NewExpensesActivity extends AppCompatActivity {
         btAdd = findViewById(R.id.button_add);
         swAddMe = findViewById(R.id.sw_addMe);
         swProportional  = findViewById(R.id.sw_proportional);
-
+        builder = new AlertDialog.Builder(NewExpensesActivity.this);
         loadSpinnerData();
-
+        context = getApplicationContext();
         btSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,11 +155,20 @@ public class NewExpensesActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(Expense item) {
-                //addedFriendsList.remove(item);
-                addedExpensesList.remove(item);;
+
+                addedExpensesList.remove(item);
                 friendsCounter -=1;
                 changeSum();
                 adapterFriendsExpenses.notifyDataSetChanged();
+
+                List<Friends> tmp = friendsRepository.getAllFriendses().getValue();
+                for(Friends tmp2: tmp) {
+                   if(tmp2.getId() == item.getExtern_key_Friends())
+                   {
+                       dataAdapter.add(tmp2);
+                   }
+                }
+
                 //loadSpinnerData(); //TODO poprawić, odświerzanie aby nie ładował całego spinnera tylko dadany element.
             }
 
@@ -203,40 +219,60 @@ public class NewExpensesActivity extends AppCompatActivity {
 
     //TODO czyszczenie wszystkiego zrobić
     private void clearAll() {
-        tvSum.setText("Suma");
-        tvUsersList.setText("Lista wybranych znajomych");
-        tvExpensesList.setText("Lista wydatków:");
+        etExpenseView.setText("");
+        etValueView.setText("");
+        sum = 0;
+        sumPart = 0;
+        addedExpensesList.clear();
+        adapterFriendsExpenses.notifyDataSetChanged();
+        loadSpinnerData();
+
+        changeSum();
     }
 
     private void setSaveButton() {
         Intent replyIntent = new Intent();
 
         if (TextUtils.isEmpty(etExpenseView.getText()) || TextUtils.isEmpty(etValueView.getText()) || friendsCounter < 1 ) {
-            setResult(RESULT_CANCELED, replyIntent);
-        } else {
+            showToast("Popraw dane");
+            //setResult(RESULT_CANCELED, replyIntent);
+        } else if (sumPart<0) {
+            showToast("Suma nie może być mniejsza niż 0 !");
+        }
+        else if(sumPart>0)
+        {
+            alertYesNoBuilder("Suma jest większa niż 0 i wynosi: " +sumPart +"Czy chcesz zapisać ?",replyIntent);
+        }
+        else
+         {
+             saveAndExit(replyIntent);
 
-            for (Expense temp1 : addedExpensesList) {
-                temp1.setExpanse(etExpenseView.getText().toString());
-                if(swProportional.isChecked())temp1.setValue((String.valueOf(Math.round((sum/friendsCounter)*100)/100.0)));
-            }
+         }
 
-            replyIntent.putExtra(EXTRA_REPLY_FRIENDS_LIST, (Serializable) addedExpensesList);
-            replyIntent.putExtra(EXTRA_REPLY_TITLE,  etExpenseView.getText().toString());
-            replyIntent.putExtra(EXTRA_REPLY_EXPENSE,  Math.round((sum/friendsCounter)*100)/100.0);
-            setResult(RESULT_OK, replyIntent);
-            finish();
+    }
+
+    private void saveAndExit(Intent replyIntent) {
+        for (Expense temp1 : addedExpensesList) {
+            temp1.setExpanse(etExpenseView.getText().toString());
+            if(swProportional.isChecked())temp1.setValue((String.valueOf(Math.round((sum/friendsCounter)*100)/100.0)));
         }
 
+        replyIntent.putExtra(EXTRA_REPLY_FRIENDS_LIST, (Serializable) addedExpensesList);
+        replyIntent.putExtra(EXTRA_REPLY_TITLE,  etExpenseView.getText().toString());
+        replyIntent.putExtra(EXTRA_REPLY_EXPENSE,  Math.round((sum/friendsCounter)*100)/100.0);
+        setResult(RESULT_OK, replyIntent);
+        finish();
     }
 
     private void loadSpinnerData() {
 
-        FriendsRepository friendsRepository = new FriendsRepository(getApplication());
-        ArrayList<Friends> friendsList=new ArrayList<Friends>(2);
+        friendsRepository = new FriendsRepository(getApplication());
+        friendsList=new ArrayList<Friends>(2);
         friendsList.add(0,new Friends("Wybierz","znajomego"));
 
-        final ArrayAdapter<Friends> dataAdapter = new FriendsSpinnerAdapter(this,
+        dataAdapter = new FriendsSpinnerAdapter(this,
                 android.R.layout.simple_spinner_item, friendsList);
+
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spUsers.setAdapter(dataAdapter);
         spUsers.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -250,8 +286,6 @@ public class NewExpensesActivity extends AppCompatActivity {
                 Expense tmpEx = new Expense(friends.getName() + " " + friends.getSurname(), "0", "0", friends.getId());
                 tmpEx.setImage(friends.getImage());
                 addedExpensesList.add(tmpEx);
-                //addedFriendsList.add(friends);
-
                 changeSum();
                 dataAdapter.remove(friends);
                 adapterFriendsExpenses.notifyDataSetChanged();
@@ -292,6 +326,39 @@ public class NewExpensesActivity extends AppCompatActivity {
             tvSum.setText("Suma wydatków: " + Math.round(sum * 100.0) / 100.0 + " zł \n" + "Do podziału zostało " + (sum - sumPart));
 
         }
+    }
+
+    private void showToast(String text)
+    {
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
+    protected void alertYesNoBuilder(String text, Intent intent)
+    {
+        builder.setTitle("");
+        builder.setMessage(text);
+
+        //Yes Button
+        builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                saveAndExit(intent);
+                //Toast.makeText(getApplicationContext(),"Dług usunięty!",Toast.LENGTH_LONG).show();
+                //Log.i("Code2care ", "Dług usunięty!");
+            }
+        });
+
+        //No Button
+        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"Anulowano wybór",Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+
+            }
+        });
+
     }
 
 }

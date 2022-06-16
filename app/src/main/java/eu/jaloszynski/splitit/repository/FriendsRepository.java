@@ -31,6 +31,10 @@ public class FriendsRepository {
         return allFriendses;
     }
 
+    public LiveData<List<Friends>> getFriendsByFid(int id) {
+        return friendsDao.getFriendByFid(id);
+    }
+
 
     public void insert(Friends friends) {
         new InsertExpanseAsyncTask(friendsDao).execute(friends);

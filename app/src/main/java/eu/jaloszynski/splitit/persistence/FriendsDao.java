@@ -23,5 +23,8 @@ public interface FriendsDao {
     @Query("SELECT * from friends_table ORDER BY name asc")
     List<Friends> getAllFriends2();
 
+    @Query("SELECT * from friends_table WHERE id like :idFriend")
+    LiveData<List<Friends>> getFriendByFid(int idFriend);
+
 
 }

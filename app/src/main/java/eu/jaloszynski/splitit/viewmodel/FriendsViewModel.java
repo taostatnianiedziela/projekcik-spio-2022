@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import eu.jaloszynski.splitit.persistence.Expense;
 import eu.jaloszynski.splitit.persistence.Friends;
 import eu.jaloszynski.splitit.repository.FriendsRepository;
 
@@ -27,6 +28,9 @@ public class FriendsViewModel extends AndroidViewModel {
         return allFriendses;
     }
 
+    public LiveData<List<Friends>> getFriendsByFid(int id) {
+        return repository.getFriendsByFid(id);
+    }
 
 
     public void insert(Friends friends) {

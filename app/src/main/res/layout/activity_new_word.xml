@@ -121,7 +121,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFriendsExpenses"
         android:layout_width="381dp"
-        android:layout_height="228dp"
+        android:layout_height="0dp"
         android:background="#36362F"
         app:layout_constraintBottom_toTopOf="@+id/button_add"
         app:layout_constraintEnd_toEndOf="parent"
