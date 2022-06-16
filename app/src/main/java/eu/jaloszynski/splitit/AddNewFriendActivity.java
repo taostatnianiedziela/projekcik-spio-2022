@@ -66,20 +66,19 @@ public class AddNewFriendActivity extends AppCompatActivity {
 
                 Intent replyIntent = new Intent();
 
-                if (TextUtils.isEmpty(etName.getText())) {
+                if (TextUtils.isEmpty(etName.getText()) && TextUtils.isEmpty(etSurname.getText())) {
                     setResult(RESULT_CANCELED, replyIntent);
-                    // TODO warunek dla surname jeszcze
+                    // DONE warunek dla surname jeszcze
                 } else {
 
                     //String photo= BitmapManager.bitmapToBase64(bitmap);
-                    byte[] image=BitmapManager.bitmapToByte(bitmap);
-
                     FriendsExtra tmp1 = new FriendsExtra(
                             etName.getText().toString(),
                             etSurname.getText().toString());
-                    tmp1.setImage(image);
-
-
+                    if(bitmap!=null){
+                        byte[] image=BitmapManager.bitmapToByte(bitmap);
+                        tmp1.setImage(image);
+                    }
                     setResult(RESULT_OK, replyIntent);
                     replyIntent.putExtra(EXTRA_REPLY, tmp1);
 
@@ -92,24 +91,24 @@ public class AddNewFriendActivity extends AppCompatActivity {
 
     // function to let's the user to choose image from camera or gallery
     private void chooseImage(Context context){
-        final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery", "Exit" }; // create a menuOption Array
+        final CharSequence[] optionsMenu = {"Zrób zdjęcie", "Wybierz z galerii", "Anuluj" }; // create a menuOption Array
         // create a dialog for showing the optionsMenu
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         // set the items in builder
         builder.setItems(optionsMenu, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if(optionsMenu[i].equals("Take Photo")){
+                if(optionsMenu[i].equals("Zrób zdjęcie")){
                     // Open the camera and get the photo
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(takePicture, 0);
                 }
-                else if(optionsMenu[i].equals("Choose from Gallery")){
+                else if(optionsMenu[i].equals("Wybierz z galerii")){
                     // choose from  external storage
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(pickPhoto , 1);
                 }
-                else if (optionsMenu[i].equals("Exit")) {
+                else if (optionsMenu[i].equals("Anuluj")) {
                     dialogInterface.dismiss();
                 }
             }

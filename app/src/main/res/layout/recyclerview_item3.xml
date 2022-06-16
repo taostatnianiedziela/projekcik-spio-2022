@@ -7,22 +7,23 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingVertical="8dp"
-    android:weightSum="3">
+    android:weightSum="18">
 
     <TextView
         android:id="@+id/tvNameElement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="9"
         android:text="TextView"
         android:textColor="#9E9E9E"
         android:textSize="18sp" />
 
     <EditText
         android:id="@+id/etPartOfExpenses"
-        android:layout_width="19dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:ems="10"
+        android:layout_weight="2"
+        android:ems="6"
         android:hint="podział"
         android:inputType="numberSigned|number|numberDecimal"
         android:minHeight="48dp"
@@ -33,6 +34,7 @@
         android:id="@+id/btDeleteElement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="3"
         android:translationX="20px"
         android:translationY="15px"
         app:srcCompat="@android:drawable/ic_menu_delete" />

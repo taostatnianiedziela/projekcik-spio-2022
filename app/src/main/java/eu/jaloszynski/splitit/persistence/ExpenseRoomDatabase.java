@@ -7,9 +7,13 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import eu.jaloszynski.splitit.helpers.Converters;
+
 @Database(entities = {Expense.class}, version = 1)
+@TypeConverters({Converters.class})
 public abstract class ExpenseRoomDatabase extends RoomDatabase {
     private static volatile ExpenseRoomDatabase INSTANCE;
 

@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -42,7 +43,7 @@ import eu.jaloszynski.splitit.persistence.Expense;
 import eu.jaloszynski.splitit.persistence.Friends;
 import eu.jaloszynski.splitit.repository.FriendsRepository;
 
-public class NewWordActivity extends AppCompatActivity {
+public class NewExpensesActivity extends AppCompatActivity {
     public static final String EXTRA_REPLY_FRIENDS_LIST = "FRIENDS_LIST_EXTRA";
     public static final String EXTRA_REPLY_EXPENSE = "EXPENSE_EXTRA";
     public static final String EXTRA_REPLY_TITLE = "TITLE_EXTRA";
@@ -72,7 +73,7 @@ public class NewWordActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapterFriendsExpenses;
 
 
-    public NewWordActivity() {
+    public NewExpensesActivity() {
     }
 
     @Override

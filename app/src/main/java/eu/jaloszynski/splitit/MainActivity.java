@@ -7,19 +7,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         fab_add_exoenses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewWordActivity.class);
+                Intent intent = new Intent(MainActivity.this, NewExpensesActivity.class);
                 //Intent intent = new Intent(MainActivity.this, HistoryExpenseActivity.class);
                 //startActivity(intent);
                 startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
@@ -199,9 +193,9 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 Intent intent = getIntent();
-                List<Expense>  tmpFriendsList = (List<Expense>) data.getSerializableExtra(NewWordActivity.EXTRA_REPLY_FRIENDS_LIST);
-                double expense_1 = (double) data.getSerializableExtra(NewWordActivity.EXTRA_REPLY_EXPENSE);
-                String title = (String) data.getSerializableExtra(NewWordActivity.EXTRA_REPLY_TITLE);
+                List<Expense>  tmpFriendsList = (List<Expense>) data.getSerializableExtra(NewExpensesActivity.EXTRA_REPLY_FRIENDS_LIST);
+                double expense_1 = (double) data.getSerializableExtra(NewExpensesActivity.EXTRA_REPLY_EXPENSE);
+                String title = (String) data.getSerializableExtra(NewExpensesActivity.EXTRA_REPLY_TITLE);
 
                 if (tmpFriendsList != null && expense_1 != 0) {
                     for (Expense temp1 : tmpFriendsList) {

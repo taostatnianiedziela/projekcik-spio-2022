@@ -28,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -85,7 +86,7 @@ public class FriendExpenseActivity extends AppCompatActivity {
 
         expenseViewModel = ViewModelProviders.of(this).get(ExpenseViewModel.class);
 
-        // TODO dodac wyswietlanie tylko z danym ID
+        // DONE dodac wyswietlanie tylko z danym ID
         expenseViewModel.getAllExpenses().observe(this, new Observer<List<Expense>>() {
             @Override
             public void onChanged(@Nullable List<Expense> expenses) {
@@ -97,8 +98,6 @@ public class FriendExpenseActivity extends AppCompatActivity {
                         .filter(p ->p.getExtern_key_Friends() == tmp_id)   // filtering price
                         .map(pm ->pm)          // fetching price
                         .collect(Collectors.toList());
-//                Optional<Expense> expenses2 = expenses.stream().
-//                        filter(p -> p.getExtern_key_Friends() == tmp_id).;
                 adapter_2.setExpenses(expenses2);
                 if(!expenses2.isEmpty()) {
                     name = expenses2.get(0).getName();
@@ -107,7 +106,7 @@ public class FriendExpenseActivity extends AppCompatActivity {
                 else
                 {
                     finish();
-                    //TODO co kiedy lista jest pusta bo usunąłeś wszystkie ??
+                    //DONE co kiedy lista jest pusta bo usunąłeś wszystkie ??
                 }
             }
 
@@ -142,18 +141,6 @@ public class FriendExpenseActivity extends AppCompatActivity {
         return tmp;
     }
 
-    public double parseDecimal(String input) throws ParseException {
-        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
-        ParsePosition parsePosition = new ParsePosition(0);
-        Number number = numberFormat.parse(input, parsePosition);
-
-        if(parsePosition.getIndex() != input.length()){
-            throw new ParseException("Invalid input", parsePosition.getIndex());
-        }
-
-        return number.doubleValue();
-    }
-
     public void RequestSmsCode(String message, String... number) {
         Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "sms:" ));
         intent.putExtra( "sms_body", message );
@@ -173,6 +160,7 @@ public class FriendExpenseActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 expenseViewModel.delete(item);
                 item.setHistory(true);
+                item.setEndData(new Date());
                 expenseViewModel.insert(item);
                 Toast.makeText(getApplicationContext(),"Dług usunięty!",Toast.LENGTH_LONG).show();
                 Log.i("Code2care ", "Dług usunięty!");

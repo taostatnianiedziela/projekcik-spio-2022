@@ -1,6 +1,7 @@
 package eu.jaloszynski.splitit.persistence;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -19,12 +20,10 @@ public class Expense implements Serializable {
     private String expanse;
     private String value;
     private boolean history;
-
-
-
     @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB)
     private byte[] image;
-    //TODO dodac daty powstania i zakonczenia
+    private Date endData;
+    private Date createData;
 
     public boolean isHistory() {
         return history;
@@ -43,6 +42,7 @@ public class Expense implements Serializable {
         this.value = value;
         this.extern_key_Friends = extern_key_Friends;
         this.history = false;
+        this.createData = new Date();
     }
 
 
@@ -97,6 +97,23 @@ public class Expense implements Serializable {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+
+    public Date getCreateData() {
+        return createData;
+    }
+
+    public void setCreateData(Date createData) {
+        this.createData = createData;
+    }
+
+    public Date getEndData() {
+        return endData;
+    }
+
+    public void setEndData(Date endData) {
+        this.endData = endData;
     }
 
     @Override
