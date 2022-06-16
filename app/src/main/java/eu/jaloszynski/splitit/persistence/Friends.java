@@ -19,17 +19,17 @@ public class Friends implements Serializable {
     private String surname;
     private String phone;
 
+
+
+    @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB)
+    private byte[] image;
+
     public Friends(@NonNull String name, String surname) {
         //this.id = id;
         this.name = name;
         this.surname = surname;
 
     }
-
-//    @Override
-//    public String toString() {
-//        return this.name + " " + this.surname; // What to display in the Spinner list.
-//    }
 
     public void setId(int id) {
         this.id = id;
@@ -62,6 +62,14 @@ public class Friends implements Serializable {
 
     public String getPhone() {
         return phone;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     @Override

@@ -244,8 +244,9 @@ public class NewWordActivity extends AppCompatActivity {
                     return;
                 Friends friends = dataAdapter.getItem(position);
                 friendsCounter +=1;
-
-                addedExpensesList.add(new Expense(friends.getName() + " " + friends.getSurname(), "0", "0", friends.getId()));
+                Expense tmpEx = new Expense(friends.getName() + " " + friends.getSurname(), "0", "0", friends.getId());
+                tmpEx.setImage(friends.getImage());
+                addedExpensesList.add(tmpEx);
                 //addedFriendsList.add(friends);
 
                 changeSum();

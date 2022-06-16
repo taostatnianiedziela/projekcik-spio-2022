@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import eu.jaloszynski.splitit.R;
+import eu.jaloszynski.splitit.helpers.BitmapManager;
 import eu.jaloszynski.splitit.helpers.OnItemClickListener;
 import eu.jaloszynski.splitit.persistence.Expense;
 
@@ -37,12 +39,14 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
     public void onBindViewHolder(@NonNull ExpenseListAdapter.ExpenseViewHolder expenseViewHolder, int i) {
         TextView tvName = expenseViewHolder.expenseViewHolder;
         TextView tvValue = expenseViewHolder.valueViewHolder;
+        ImageView imageView = expenseViewHolder.image;
 
         expenseViewHolder.bind(expenses.get(i), listener);
 
         if (expenses != null) {
             tvName.setText(expenses.get(i).getName());
             tvValue.setText(expenses.get(i).getValue());
+            if(expenses.get(i).getImage()!=null) imageView.setImageBitmap(BitmapManager.byteToBitmap(expenses.get(i).getImage()));
             //TODO: More then one expanse
 
 
@@ -68,12 +72,14 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
     public static class ExpenseViewHolder extends RecyclerView.ViewHolder {
         TextView expenseViewHolder;
         TextView valueViewHolder;
+        ImageView image;
 
 
         public ExpenseViewHolder(View itemView) {
             super(itemView);
             expenseViewHolder = itemView.findViewById(R.id.tvName);
             valueViewHolder = itemView.findViewById(R.id.tvValueAll);
+            image = itemView.findViewById(R.id.profile_image);
         }
 
         public void bind(final Expense item, final OnItemClickListener listener) {

@@ -224,8 +224,9 @@ public class MainActivity extends AppCompatActivity {
                 FriendsExtra friend = (FriendsExtra) data.getSerializableExtra(AddNewFriendActivity.EXTRA_REPLY);
 
                 if (friend != null) {
-
-                    friendsViewModel.insert(new Friends(friend.getName(), friend.getSurname()));
+                    Friends tmp = new Friends(friend.getName(), friend.getSurname());
+                    tmp.setImage(friend.getImage());
+                    friendsViewModel.insert(tmp);
                 }
                 Snackbar.make(findViewById(R.id.fab), R.string.friend_saved, Snackbar.LENGTH_SHORT)
                         .show();

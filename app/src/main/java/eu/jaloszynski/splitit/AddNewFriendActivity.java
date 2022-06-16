@@ -29,6 +29,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import eu.jaloszynski.splitit.R;
+import eu.jaloszynski.splitit.helpers.BitmapManager;
 import eu.jaloszynski.splitit.helpers.FriendsExtra;
 
 public class AddNewFriendActivity extends AppCompatActivity {
@@ -37,6 +38,7 @@ public class AddNewFriendActivity extends AppCompatActivity {
     private EditText etName;
     private EditText etSurname;
     private CircleImageView imageView;
+    Bitmap bitmap;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
 
 
@@ -69,17 +71,21 @@ public class AddNewFriendActivity extends AppCompatActivity {
                     // TODO warunek dla surname jeszcze
                 } else {
 
+                    //String photo= BitmapManager.bitmapToBase64(bitmap);
+                    byte[] image=BitmapManager.bitmapToByte(bitmap);
+
                     FriendsExtra tmp1 = new FriendsExtra(
                             etName.getText().toString(),
                             etSurname.getText().toString());
+                    tmp1.setImage(image);
+
 
                     setResult(RESULT_OK, replyIntent);
-
                     replyIntent.putExtra(EXTRA_REPLY, tmp1);
 
-
+                    finish();
                 }
-                finish();
+
             }
         });
     }
@@ -161,6 +167,13 @@ public class AddNewFriendActivity extends AppCompatActivity {
         }
     }
 
+    private void insertImages(){
+
+
+
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -169,6 +182,7 @@ public class AddNewFriendActivity extends AppCompatActivity {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        bitmap = selectedImage;
                         imageView.setImageBitmap(selectedImage);
                     }
                     break;
@@ -183,6 +197,7 @@ public class AddNewFriendActivity extends AppCompatActivity {
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
                                 imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                bitmap = BitmapFactory.decodeFile(picturePath);
                                 cursor.close();
                             }
                         }

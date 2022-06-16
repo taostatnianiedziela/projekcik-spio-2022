@@ -19,6 +19,11 @@ public class Expense implements Serializable {
     private String expanse;
     private String value;
     private boolean history;
+
+
+
+    @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB)
+    private byte[] image;
     //TODO dodac daty powstania i zakonczenia
 
     public boolean isHistory() {
@@ -86,7 +91,13 @@ public class Expense implements Serializable {
         this.extern_key_Friends = extern_key_Friends;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
 
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
 
     @Override
     public boolean equals(Object o) {

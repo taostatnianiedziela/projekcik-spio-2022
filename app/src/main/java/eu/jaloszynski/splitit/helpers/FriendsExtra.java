@@ -6,7 +6,16 @@ public class FriendsExtra implements Serializable {
 
     private String Name;
     private String Surname;
+    private byte[] image;
 
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
 
     public String getName() {
         return Name;
