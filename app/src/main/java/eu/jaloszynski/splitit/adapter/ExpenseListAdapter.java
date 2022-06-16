@@ -36,16 +36,19 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ExpenseListAdapter.ExpenseViewHolder expenseViewHolder, int i) {
         TextView tvName = expenseViewHolder.expenseViewHolder;
+        TextView tvValue = expenseViewHolder.valueViewHolder;
 
         expenseViewHolder.bind(expenses.get(i), listener);
 
         if (expenses != null) {
             tvName.setText(expenses.get(i).getName());
+            tvValue.setText(expenses.get(i).getValue());
             //TODO: More then one expanse
 
 
         } else {
             tvName.setText("N/A");
+            tvValue.setText("N/A");
         }
     }
 
@@ -64,11 +67,13 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
 
     public static class ExpenseViewHolder extends RecyclerView.ViewHolder {
         TextView expenseViewHolder;
+        TextView valueViewHolder;
 
 
         public ExpenseViewHolder(View itemView) {
             super(itemView);
             expenseViewHolder = itemView.findViewById(R.id.tvName);
+            valueViewHolder = itemView.findViewById(R.id.tvValueAll);
         }
 
         public void bind(final Expense item, final OnItemClickListener listener) {

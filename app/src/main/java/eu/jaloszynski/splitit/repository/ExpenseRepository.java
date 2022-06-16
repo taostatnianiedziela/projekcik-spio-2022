@@ -17,17 +17,22 @@ public class ExpenseRepository {
     private LiveData<List<Expense>> allExpenses;
     private LiveData<List<Expense>> unikeExpensesId;
     private LiveData<List<Expense>> expensesByFid;
+    private LiveData<List<Expense>> allHistoryExpenses;
     private int id;
 
     public ExpenseRepository(Application application) {
         ExpenseRoomDatabase db = ExpenseRoomDatabase.getInstance(application);
         expenseDao = db.expenseDao();
-        allExpenses = expenseDao.getAllWords();
+        allExpenses = expenseDao.getAllExpenses();
+        allHistoryExpenses = expenseDao.getAllHistoryExpenses();
         unikeExpensesId = expenseDao.getAllExpensesGroupEKF();
     }
 
-    public LiveData<List<Expense>> getAllWords() {
+    public LiveData<List<Expense>> getAllExpenses() {
         return allExpenses;
+    }
+    public LiveData<List<Expense>> getAllHistoryExpenses() {
+        return allHistoryExpenses;
     }
 
     public LiveData<List<Expense>> getExpensesByFid(int id) {

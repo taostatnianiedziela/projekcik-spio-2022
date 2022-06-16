@@ -1,5 +1,6 @@
 package eu.jaloszynski.splitit.persistence;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -8,7 +9,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "expense_table")
-public class Expense {
+public class Expense implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -17,8 +18,16 @@ public class Expense {
     private String name;
     private String expanse;
     private String value;
+    private boolean history;
+    //TODO dodac daty powstania i zakonczenia
 
+    public boolean isHistory() {
+        return history;
+    }
 
+    public void setHistory(boolean history) {
+        this.history = history;
+    }
 
     private int extern_key_Friends;
 
@@ -28,10 +37,17 @@ public class Expense {
         this.expanse = expanse;
         this.value = value;
         this.extern_key_Friends = extern_key_Friends;
+        this.history = false;
     }
+
 
     public String getExpanse() {
         return expanse;
+    }
+
+    public double getValueInDouble()
+    {
+        return Double.parseDouble(this.value);
     }
 
     public String getValue() {

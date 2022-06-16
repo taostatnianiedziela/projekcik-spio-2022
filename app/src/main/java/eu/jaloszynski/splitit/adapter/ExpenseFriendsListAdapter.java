@@ -1,6 +1,8 @@
 package eu.jaloszynski.splitit.adapter;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +22,11 @@ import eu.jaloszynski.splitit.persistence.Friends;
 
 public class ExpenseFriendsListAdapter extends RecyclerView.Adapter<ExpenseFriendsListAdapter.ViewHolder> {
 
-    private List<Friends> friendsList;
+    private List<Expense> friendsList;
     private final OnItemClickListenerFriends listener;
 
 
-    public ExpenseFriendsListAdapter(Context context, OnItemClickListenerFriends listener, List<Friends> friendsList) {
+    public ExpenseFriendsListAdapter(Context context, OnItemClickListenerFriends listener, List<Expense> friendsList) {
         this.friendsList = friendsList;
         this.listener = listener;
     }
@@ -42,11 +44,12 @@ public class ExpenseFriendsListAdapter extends RecyclerView.Adapter<ExpenseFrien
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Friends friend = friendsList.get(position);
+        Expense friend = friendsList.get(position);
 
 
-        holder.name.setText(friend.getName() + " " +friend.getSurname());
-        holder.partOfExpenses.setText("tutaj podamy ile");
+        //holder.name.setText(friend.getName() + " " +friend.getSurname());
+        holder.name.setText(friend.getName());// + " " +friend.getSurname());
+        holder.partOfExpenses.setText(friend.getValue());
 
         holder.bind(friendsList.get(position), listener);
 
@@ -79,16 +82,29 @@ public class ExpenseFriendsListAdapter extends RecyclerView.Adapter<ExpenseFrien
             name = view.findViewById(R.id.tvNameElement);
             partOfExpenses = view.findViewById(R.id.etPartOfExpenses);
             imageDelete = view.findViewById(R.id.btDeleteElement);
-
-
-
-
         }
 
-        public void bind(final Friends item, final OnItemClickListenerFriends listener) {
+        public void bind(final Expense item, final OnItemClickListenerFriends listener) {
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
+                }
+            });
+
+            partOfExpenses.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    listener.afterTextChanged(item, partOfExpenses.getText().toString());
                 }
             });
 

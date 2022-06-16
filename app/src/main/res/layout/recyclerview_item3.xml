@@ -24,7 +24,7 @@
         android:layout_weight="1"
         android:ems="10"
         android:hint="podział"
-        android:inputType="number"
+        android:inputType="numberSigned|number|numberDecimal"
         android:minHeight="48dp"
         android:textColor="#9E9E9E"
         android:translationX="20px" />

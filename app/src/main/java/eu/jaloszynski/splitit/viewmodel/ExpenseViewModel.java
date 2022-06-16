@@ -17,12 +17,14 @@ public class ExpenseViewModel extends AndroidViewModel {
     private final LiveData<List<Expense>> allExpenses;
     private final LiveData<List<Expense>> expensesByFid;
     private final LiveData<List<Expense>> unikeExpensesId;
+    private final LiveData<List<Expense>> allHistoryExpenses;
     private int idFriend;
 
     public ExpenseViewModel(@NonNull Application application) {
         super(application);
         repository = new ExpenseRepository(application);
-        allExpenses = repository.getAllWords();
+        allExpenses = repository.getAllExpenses();
+        allHistoryExpenses = repository.getAllHistoryExpenses();
         expensesByFid= repository.getExpensesByFid(idFriend);
         unikeExpensesId = repository.getAllExpensesGroupEKF();
 
@@ -31,6 +33,10 @@ public class ExpenseViewModel extends AndroidViewModel {
 
     public LiveData<List<Expense>> getAllExpenses() {
         return allExpenses;
+    }
+
+    public LiveData<List<Expense>> getAllHistoryExpenses() {
+        return allHistoryExpenses;
     }
 
     public LiveData<List<Expense>> getAllExpensesGroupEKF() {

@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!--below line is use to add camera feature in our app-->
     <uses-feature android:name="android.hardware.camera" android:required="true"/>
 
@@ -44,8 +46,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".NewWordActivity" />
         <activity android:name=".AddNewFriendActivity" />
-
-
+        <activity android:name=".HistoryExpenseActivity" />
 
 
         <meta-data

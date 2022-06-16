@@ -28,6 +28,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/my_avatar_imageview"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@mipmap/avatar_tmp"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
     <EditText
         android:id="@+id/etName"
         android:layout_width="match_parent"

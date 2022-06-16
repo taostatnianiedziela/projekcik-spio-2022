@@ -1,107 +1,141 @@
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-
-public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
-
- private ArrayList<City> cities;
-
- public CityAdapter(ArrayList<City> cities) {
- this.cities = cities;
- }
-
- @NonNull
- @Override
- public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
- View v = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_city, parent, false);
-
- return new ViewHolder(v);
- }
-
- @Override
- public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
- City city = cities.get(position);
-
- holder.name.setText(city.getName());
- holder.description.setText(city.getDescription());
-
- Picasso.get().load(city.getImageURL()).into(holder.image);
- }
-
- @Override
- public int getItemCount() {
- if (cities != null) {
- return cities.size();
- } else {
- return 0;
- }
- }
-
- public static class ViewHolder extends RecyclerView.ViewHolder {
- public final View view;
- public final TextView name;
- public final TextView description;
- public final ImageView image;
-
- public ViewHolder(View view) {
- super(view);
- this.view = view;
- name = view.findViewById(R.id.name);
- description = view.findViewById(R.id.description);
- image = view.findViewById(R.id.image);
- }
- }
-}
-
-
-
-
-
-
-import android.support.v7.app.AppCompatActivity;
+package com.geminisoftservices.choosephoto;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-
+import android.provider.MediaStore;
+import android.widget.ImageView;
+import android.widget.Toast;
 import java.util.ArrayList;
-
+import java.util.List;
 public class MainActivity extends AppCompatActivity {
+    // Declare the ImageView first.
+    private ImageView imageView;
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        // Initialize the imageView (Link the imageView with front-end component ImageView)
+        imageView = findViewById(R.id.my_avatar_imageview);
+        if(checkAndRequestPermissions(MainActivity.this)){
+            chooseImage(MainActivity.this);
+        }
+    }
+    // function to let's the user to choose image from camera or gallery
+    private void chooseImage(Context context){
+        final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery", "Exit" }; // create a menuOption Array
+        // create a dialog for showing the optionsMenu
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        // set the items in builder
+        builder.setItems(optionsMenu, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(optionsMenu[i].equals("Take Photo")){
+                    // Open the camera and get the photo
+                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePicture, 0);
+                }
+                else if(optionsMenu[i].equals("Choose from Gallery")){
+                    // choose from  external storage
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto , 1);
+                }
+                else if (optionsMenu[i].equals("Exit")) {
+                    dialogInterface.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
 
- private RecyclerView cities;
- private RecyclerView.Adapter adapter;
+
+    // function to check permission
+    public static boolean checkAndRequestPermissions(final Activity context) {
+        int WExtstorePermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int cameraPermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.CAMERA);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded
+                    .add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(context, listPermissionsNeeded
+                            .toArray(new String[listPermissionsNeeded.size()]),
+                    REQUEST_ID_MULTIPLE_PERMISSIONS);
+            return false;
+        }
+        return true;
+    }
 
 
- @Override
- protected void onCreate(Bundle savedInstanceState) {
- super.onCreate(savedInstanceState);
- setContentView(R.layout.activity_main);
 
- ArrayList<City> cities = initCities();
+    // Handled permission Result
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_ID_MULTIPLE_PERMISSIONS:
+                if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(),
+                            "FlagUp Requires Access to Camara.", Toast.LENGTH_SHORT)
+                            .show();
+                } else if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(),
+                            "FlagUp Requires Access to Your Storage.",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    chooseImage(MainActivity.this);
+                }
+                break;
+        }
+    }
 
- this.cities = (RecyclerView) findViewById(R.id.cities);
- RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
- this.cities.setLayoutManager(mLayoutManager);
-
- adapter = new CityAdapter(cities);
- this.cities.setAdapter(adapter);
- }
-
- private ArrayList<City> initCities() {
- ArrayList<City> list = new ArrayList<>();
-
- list.add(new City("Cinque Terre", "The coastline, the five villages in Italy.", "https://bit.ly/CBImageCinque"));
- list.add(new City("Paris", "Paris is the capital city of France", "https://bit.ly/CBImageParis"));
- list.add(new City("Rio de Janeiro", "Rio has been one of Brazil's most popular destinations.", "https://bit.ly/CBImageRio"));
- list.add(new City("Sydney", "Sydney is the state capital of New South Wales.", "https://bit.ly/CBImageSydney"));
-
- return list;
- }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_CANCELED) {
+            switch (requestCode) {
+                case 0:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        imageView.setImageBitmap(selectedImage);
+                    }
+                    break;
+                case 1:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Uri selectedImage = data.getData();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        if (selectedImage != null) {
+                            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                            if (cursor != null) {
+                                cursor.moveToFirst();
+                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                String picturePath = cursor.getString(columnIndex);
+                                imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                cursor.close();
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+    }
 }

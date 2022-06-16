@@ -100,8 +100,15 @@ public class FriendExpenseActivity extends AppCompatActivity {
 //                Optional<Expense> expenses2 = expenses.stream().
 //                        filter(p -> p.getExtern_key_Friends() == tmp_id).;
                 adapter_2.setExpenses(expenses2);
-                name = expenses2.get(0).getName();
-                setSumView();
+                if(!expenses2.isEmpty()) {
+                    name = expenses2.get(0).getName();
+                    setSumView();
+                }
+                else
+                {
+                    finish();
+                    //TODO co kiedy lista jest pusta bo usunąłeś wszystkie ??
+                }
             }
 
         });
@@ -165,6 +172,8 @@ public class FriendExpenseActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 expenseViewModel.delete(item);
+                item.setHistory(true);
+                expenseViewModel.insert(item);
                 Toast.makeText(getApplicationContext(),"Dług usunięty!",Toast.LENGTH_LONG).show();
                 Log.i("Code2care ", "Dług usunięty!");
             }
