@@ -153,7 +153,7 @@ public class NewExpensesActivity extends AppCompatActivity {
                 friendsCounter -=1;
                 changeSum();
                 adapterFriendsExpenses.notifyDataSetChanged();
-                loadSpinnerData(); //TODO poprawić, odświerzanie aby nie ładował całego spinnera tylko dadany element.
+                //loadSpinnerData(); //TODO poprawić, odświerzanie aby nie ładował całego spinnera tylko dadany element.
             }
 
             @Override
@@ -161,10 +161,12 @@ public class NewExpensesActivity extends AppCompatActivity {
                 if(!text.equals("") && !text.equals("podział"))
                 {
                     int index = addedExpensesList.indexOf(item);
-                    item.setValue(text);
-                    addedExpensesList.set(index,item);
-                    countListPart();
-                    changeSum();
+                    if(index>=0) {
+                        item.setValue(text);
+                        addedExpensesList.set(index, item);
+                        countListPart();
+                        changeSum();
+                    }
                 }
 
             }
