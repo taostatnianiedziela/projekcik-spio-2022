@@ -19,6 +19,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -49,6 +50,8 @@ public class NewExpensesActivity extends AppCompatActivity {
     public static final String EXTRA_REPLY_FRIENDS_LIST = "FRIENDS_LIST_EXTRA";
     public static final String EXTRA_REPLY_EXPENSE = "EXPENSE_EXTRA";
     public static final String EXTRA_REPLY_TITLE = "TITLE_EXTRA";
+    public static final int OPTION_SAVE = 1;
+    public static final int OPTION_BACK = 2;
 
     private TextView tvUsersList;
     private EditText etExpenseView;
@@ -69,6 +72,7 @@ public class NewExpensesActivity extends AppCompatActivity {
     private Switch swProportional;
     ArrayList<Friends> friends_tmp1;
     private AlertDialog.Builder builder;
+
 
     Context context;
     int duration = Toast.LENGTH_SHORT;
@@ -100,6 +104,12 @@ public class NewExpensesActivity extends AppCompatActivity {
         builder = new AlertDialog.Builder(NewExpensesActivity.this);
         loadSpinnerData();
         context = getApplicationContext();
+
+
+
+
+
+
         btSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,11 +200,26 @@ public class NewExpensesActivity extends AppCompatActivity {
 
         this.rvFriendsExpenses.setAdapter(adapterFriendsExpenses);
 
+
+
     }
+
+
+    @Override
+    public void onBackPressed(){
+        Intent replyIntent = new Intent();
+        alertYesNoBuilder("Twoje zmiany nie zostaną zapisane. Czy napewno chcesz zamknąć ?",replyIntent, OPTION_SAVE);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+
+    }
+
 
     private void countListPart()
     {
         sumPart = addedExpensesList.stream().collect(Collectors.summingDouble(o->o.getValueInDouble()));
+        sumPart= Math.round((sumPart)*100)/100.0;
     }
 
     private void swichAction() {
@@ -236,12 +261,15 @@ public class NewExpensesActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(etExpenseView.getText()) || TextUtils.isEmpty(etValueView.getText()) || friendsCounter < 1 ) {
             showToast("Popraw dane");
             //setResult(RESULT_CANCELED, replyIntent);
-        } else if (sumPart<0) {
-            showToast("Suma nie może być mniejsza niż 0 !");
+        } else if (sum-sumPart<0 && !swProportional.isChecked()) {
+            showToast("Suma podziałów nie może być większa niż kwota wydatku");
+
         }
-        else if(sumPart>0)
+        else if(sum-sumPart>0 && !swProportional.isChecked())
         {
-            alertYesNoBuilder("Suma jest większa niż 0 i wynosi: " +sumPart +"Czy chcesz zapisać ?",replyIntent);
+            alertYesNoBuilder("Do podziału zostało: " +(sum-sumPart) +"\nCzy napewno chcesz kontynuować?",replyIntent, OPTION_SAVE);
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         }
         else
          {
@@ -254,7 +282,7 @@ public class NewExpensesActivity extends AppCompatActivity {
     private void saveAndExit(Intent replyIntent) {
         for (Expense temp1 : addedExpensesList) {
             temp1.setExpanse(etExpenseView.getText().toString());
-            if(swProportional.isChecked())temp1.setValue((String.valueOf(Math.round((sum/friendsCounter)*100)/100.0)));
+            if(swProportional.isChecked()) temp1.setValue((String.valueOf(Math.round((sum/friendsCounter)*100)/100.0)));
         }
 
         replyIntent.putExtra(EXTRA_REPLY_FRIENDS_LIST, (Serializable) addedExpensesList);
@@ -334,7 +362,7 @@ public class NewExpensesActivity extends AppCompatActivity {
         toast.show();
     }
 
-    protected void alertYesNoBuilder(String text, Intent intent)
+    protected void alertYesNoBuilder(String text, Intent intent, int option)
     {
         builder.setTitle("");
         builder.setMessage(text);
@@ -343,7 +371,9 @@ public class NewExpensesActivity extends AppCompatActivity {
         builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                saveAndExit(intent);
+
+                if(option==OPTION_SAVE) saveAndExit(intent);
+                else if(option==OPTION_BACK) finish();
                 //Toast.makeText(getApplicationContext(),"Dług usunięty!",Toast.LENGTH_LONG).show();
                 //Log.i("Code2care ", "Dług usunięty!");
             }

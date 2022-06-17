@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setSumView(List<Expense> expenses) {
 
-         tv_info.setText("Witaj "+name+"!\n"+"Twoi znajomi są Ci dłużni \n" + SumOfValue + " zł");
+         tv_info.setText("Witaj "+name+"!\n"+"Twoi znajomi są Ci dłużni \n" + Math.round((SumOfValue)*100)/100.0 + " zł");
         //tv_info.setText("Witaj "+name+"!\n"+"Sprawdź ile są Ci dłużni Twoi znajomi!");
     }
 

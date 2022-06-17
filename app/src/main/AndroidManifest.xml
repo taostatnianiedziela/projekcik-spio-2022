@@ -19,21 +19,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme.NoActionBar"
+        android:screenOrientation="portrait">
         <activity
             android:name=".recognizeBill"
             android:exported="false"
             android:label="@string/title_activity_recognize_bill"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".FriendExpenseActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".Login"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,11 +47,15 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".NewExpensesActivity"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".AddNewFriendActivity" />
-        <activity android:name=".HistoryExpenseActivity" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AddNewFriendActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".HistoryExpenseActivity"
+            android:screenOrientation="portrait"/>
 
 
         <meta-data

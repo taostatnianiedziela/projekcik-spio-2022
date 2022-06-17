@@ -91,8 +91,6 @@ public class FriendExpenseActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<Expense> expenses) {
                 // Update the cached copy of the words in the adapter.
-
-
                 assert expenses != null;
                 expenses2 =  expenses.stream()
                         .filter(p ->p.getExtern_key_Friends() == tmp_id)   // filtering price
